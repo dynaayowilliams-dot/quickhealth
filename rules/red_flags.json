@@ -1,0 +1,259 @@
+{
+  "version": 1,
+  "pathways": {
+    "infant_under_2_months": {
+      "rule_ids": [
+        "child_unable_to_drink_or_feed",
+        "child_convulsions",
+        "child_lethargy_or_hard_to_wake",
+        "child_fast_or_difficult_breathing",
+        "child_bluish_lips",
+        "child_vomits_everything",
+        "child_severe_dehydration_signs",
+        "infant_fever_under_2_months"
+      ],
+      "default_level": "ROUTINE"
+    },
+    "child_under_5": {
+      "rule_ids": [
+        "child_unable_to_drink_or_feed",
+        "child_convulsions",
+        "child_lethargy_or_hard_to_wake",
+        "child_fast_or_difficult_breathing",
+        "child_bluish_lips",
+        "child_vomits_everything",
+        "child_severe_dehydration_signs"
+      ],
+      "default_level": "ROUTINE"
+    },
+    "pregnancy_trimester_1": {
+      "rule_ids": ["pregnancy_headache_with_visual_changes", "pregnancy_vaginal_bleeding", "obstetric_convulsions", "pregnancy_reduced_fetal_movement", "pregnancy_leaking_fluid", "obstetric_severe_abdominal_pain", "pregnancy_fever_with_chills_same_day"],
+      "default_level": "ROUTINE"
+    },
+    "pregnancy_trimester_2": {
+      "rule_ids": ["pregnancy_headache_with_visual_changes", "pregnancy_vaginal_bleeding", "obstetric_convulsions", "pregnancy_reduced_fetal_movement", "pregnancy_leaking_fluid", "obstetric_severe_abdominal_pain", "pregnancy_fever_with_chills_same_day"],
+      "default_level": "ROUTINE"
+    },
+    "pregnancy_trimester_3": {
+      "rule_ids": ["pregnancy_headache_with_visual_changes", "pregnancy_vaginal_bleeding", "obstetric_convulsions", "pregnancy_reduced_fetal_movement", "pregnancy_leaking_fluid", "obstetric_severe_abdominal_pain", "pregnancy_fever_with_chills_same_day"],
+      "default_level": "ROUTINE"
+    },
+    "pregnancy_trimester_unknown": {
+      "rule_ids": ["pregnancy_headache_with_visual_changes", "pregnancy_vaginal_bleeding", "obstetric_convulsions", "pregnancy_reduced_fetal_movement", "pregnancy_leaking_fluid", "obstetric_severe_abdominal_pain", "pregnancy_fever_with_chills_same_day"],
+      "default_level": "SEE_CLINICIAN_TODAY"
+    },
+    "postpartum": {
+      "rule_ids": ["postpartum_severe_headache_visual_changes", "obstetric_convulsions", "postpartum_severe_abdominal_pain", "postpartum_fever_foul_discharge", "postpartum_increased_vaginal_bleeding", "postpartum_breathing_difficulty"],
+      "default_level": "ROUTINE"
+    },
+    "other_adult": {
+      "rule_ids": [],
+      "default_level": "SEE_CLINICIAN_TODAY"
+    },
+    "unknown": {
+      "rule_ids": [
+        "child_unable_to_drink_or_feed",
+        "child_convulsions",
+        "child_lethargy_or_hard_to_wake",
+        "child_fast_or_difficult_breathing",
+        "child_bluish_lips",
+        "child_vomits_everything",
+        "child_severe_dehydration_signs",
+        "infant_fever_under_2_months",
+        "pregnancy_headache_with_visual_changes",
+        "pregnancy_vaginal_bleeding",
+        "obstetric_convulsions",
+        "pregnancy_reduced_fetal_movement",
+        "pregnancy_leaking_fluid",
+        "obstetric_severe_abdominal_pain",
+        "pregnancy_fever_with_chills_same_day",
+        "postpartum_fever_foul_discharge",
+        "postpartum_increased_vaginal_bleeding",
+        "postpartum_breathing_difficulty"
+      ],
+      "default_level": "SEE_CLINICIAN_TODAY"
+    }
+  },
+  "rules": [
+    {
+      "id": "child_unable_to_drink_or_feed",
+      "pathways": ["infant_under_2_months", "child_under_5", "unknown"],
+      "level": "EMERGENCY_NOW",
+      "patterns": ["not able to drink", "not able to breastfeed", "unable to drink", "unable to feed", "cannot drink", "cannot feed"],
+      "message": "A child danger sign was reported. Stop the questions and seek emergency care now. Call emergency services or go to the nearest hospital.",
+      "source": "WHO IMCI: Integrated Management of Childhood Illness Chart Booklet; WHO IMCI: Management of the Sick Young Infant Aged Up to 2 Months",
+      "reviewed_by_clinician": false
+    },
+    {
+      "id": "child_convulsions",
+      "pathways": ["infant_under_2_months", "child_under_5", "unknown"],
+      "level": "EMERGENCY_NOW",
+      "patterns": ["convulsion", "convulsions", "seizure", "seizures", "fits"],
+      "message": "A child danger sign was reported. Stop the questions and seek emergency care now. Call emergency services or go to the nearest hospital.",
+      "source": "WHO IMCI: Integrated Management of Childhood Illness Chart Booklet; WHO IMCI: Management of the Sick Young Infant Aged Up to 2 Months",
+      "reviewed_by_clinician": false
+    },
+    {
+      "id": "child_lethargy_or_hard_to_wake",
+      "pathways": ["infant_under_2_months", "child_under_5", "unknown"],
+      "level": "EMERGENCY_NOW",
+      "patterns": ["lethargic", "unconscious", "hard to wake", "difficult to wake", "not waking"],
+      "message": "A child danger sign was reported. Stop the questions and seek emergency care now. Call emergency services or go to the nearest hospital.",
+      "source": "WHO IMCI: Integrated Management of Childhood Illness Chart Booklet; WHO IMCI: Management of the Sick Young Infant Aged Up to 2 Months",
+      "reviewed_by_clinician": false
+    },
+    {
+      "id": "child_fast_or_difficult_breathing",
+      "pathways": ["infant_under_2_months", "child_under_5", "unknown"],
+      "level": "EMERGENCY_NOW",
+      "patterns": ["fast breathing", "breathing fast", "difficult breathing", "difficulty breathing", "trouble breathing", "cannot breathe", "not breathing"],
+      "message": "A child danger sign was reported. Stop the questions and seek emergency care now. Call emergency services or go to the nearest hospital.",
+      "source": "WHO IMCI: Integrated Management of Childhood Illness Chart Booklet; WHO IMCI: Management of the Sick Young Infant Aged Up to 2 Months",
+      "reviewed_by_clinician": false
+    },
+    {
+      "id": "child_bluish_lips",
+      "pathways": ["infant_under_2_months", "child_under_5", "unknown"],
+      "level": "EMERGENCY_NOW",
+      "patterns": ["bluish lips", "blue lips"],
+      "message": "A child danger sign was reported. Stop the questions and seek emergency care now. Call emergency services or go to the nearest hospital.",
+      "source": "WHO IMCI: Integrated Management of Childhood Illness Chart Booklet; WHO IMCI: Management of the Sick Young Infant Aged Up to 2 Months",
+      "reviewed_by_clinician": false
+    },
+    {
+      "id": "child_vomits_everything",
+      "pathways": ["infant_under_2_months", "child_under_5", "unknown"],
+      "level": "EMERGENCY_NOW",
+      "patterns": ["vomits everything", "vomiting everything", "vomit everything", "throws up everything"],
+      "message": "A child danger sign was reported. Stop the questions and seek emergency care now. Call emergency services or go to the nearest hospital.",
+      "source": "WHO IMCI: Integrated Management of Childhood Illness Chart Booklet; WHO IMCI: Management of the Sick Young Infant Aged Up to 2 Months",
+      "reviewed_by_clinician": false
+    },
+    {
+      "id": "child_severe_dehydration_signs",
+      "pathways": ["infant_under_2_months", "child_under_5", "unknown"],
+      "level": "EMERGENCY_NOW",
+      "patterns": ["severe dehydration", "signs of severe dehydration"],
+      "message": "A child danger sign was reported. Stop the questions and seek emergency care now. Call emergency services or go to the nearest hospital.",
+      "source": "WHO IMCI: Integrated Management of Childhood Illness Chart Booklet; WHO IMCI: Management of the Sick Young Infant Aged Up to 2 Months",
+      "reviewed_by_clinician": false
+    },
+    {
+      "id": "infant_fever_under_2_months",
+      "pathways": ["infant_under_2_months", "unknown"],
+      "level": "EMERGENCY_NOW",
+      "patterns": ["fever", "febrile"],
+      "message": "Fever was reported for a baby under 2 months. Stop the questions and seek emergency care now. Call emergency services or go to the nearest hospital.",
+      "source": "WHO IMCI: Management of the Sick Young Infant Aged Up to 2 Months",
+      "reviewed_by_clinician": false
+    },
+    {
+      "id": "pregnancy_headache_with_visual_changes",
+      "pathways": ["pregnancy_trimester_1", "pregnancy_trimester_2", "pregnancy_trimester_3", "pregnancy_trimester_unknown", "unknown"],
+      "level": "EMERGENCY_NOW",
+      "patterns": ["headache.{0,60}(blurred vision|visual changes|vision changes)", "(blurred vision|visual changes|vision changes).{0,60}headache"],
+      "message": "A pregnancy danger sign was reported. Stop the questions and seek emergency care now. Call emergency services or go to the nearest hospital.",
+      "source": "WHO maternal danger signs; Nigeria Federal Ministry of Health ANC Orientation Package for Health Care Providers and Safe Motherhood guidance",
+      "reviewed_by_clinician": false
+    },
+    {
+      "id": "postpartum_severe_headache_visual_changes",
+      "pathways": ["postpartum"],
+      "level": "EMERGENCY_NOW",
+      "patterns": ["severe headache.{0,60}(blurred vision|visual changes|vision changes)", "(blurred vision|visual changes|vision changes).{0,60}severe headache"],
+      "message": "A postpartum danger sign was reported. Stop the questions and seek emergency care now. Call emergency services or go to the nearest hospital.",
+      "source": "WHO danger signs after childbirth; Nigeria Federal Ministry of Health postpartum care and Safe Motherhood guidance",
+      "reviewed_by_clinician": false
+    },
+    {
+      "id": "pregnancy_vaginal_bleeding",
+      "pathways": ["pregnancy_trimester_1", "pregnancy_trimester_2", "pregnancy_trimester_3", "pregnancy_trimester_unknown", "unknown"],
+      "level": "EMERGENCY_NOW",
+      "patterns": ["vaginal bleeding", "bleeding during pregnancy", "bleeding while pregnant"],
+      "message": "Vaginal bleeding during pregnancy was reported. Stop the questions and seek emergency care now. Call emergency services or go to the nearest hospital.",
+      "source": "WHO maternal danger signs; Nigeria Federal Ministry of Health ANC Orientation Package for Health Care Providers and Safe Motherhood guidance",
+      "reviewed_by_clinician": false
+    },
+    {
+      "id": "obstetric_convulsions",
+      "pathways": ["pregnancy_trimester_1", "pregnancy_trimester_2", "pregnancy_trimester_3", "pregnancy_trimester_unknown", "postpartum", "unknown"],
+      "level": "EMERGENCY_NOW",
+      "patterns": ["convulsion", "convulsions", "seizure", "seizures", "fits"],
+      "message": "A maternal danger sign was reported. Stop the questions and seek emergency care now. Call emergency services or go to the nearest hospital.",
+      "source": "WHO maternal danger signs; Nigeria Federal Ministry of Health ANC Orientation Package and Safe Motherhood guidance",
+      "reviewed_by_clinician": false
+    },
+    {
+      "id": "pregnancy_reduced_fetal_movement",
+      "pathways": ["pregnancy_trimester_1", "pregnancy_trimester_2", "pregnancy_trimester_3", "pregnancy_trimester_unknown", "unknown"],
+      "level": "SEE_CLINICIAN_TODAY",
+      "patterns": ["reduced fetal movement", "decreased fetal movement", "less fetal movement", "baby moving less", "baby.{0,20}moving.{0,20}(?:much\\s+)?less", "movement.{0,35}(?:much\\s+)?less"],
+      "message": "Reduced fetal movement was reported. Please seek assessment from a clinician today.",
+      "source": "WHO maternal danger signs; Nigeria Federal Ministry of Health ANC Orientation Package and Safe Motherhood guidance",
+      "reviewed_by_clinician": false
+    },
+    {
+      "id": "pregnancy_leaking_fluid",
+      "pathways": ["pregnancy_trimester_1", "pregnancy_trimester_2", "pregnancy_trimester_3", "pregnancy_trimester_unknown", "unknown"],
+      "level": "EMERGENCY_NOW",
+      "patterns": ["leaking fluid", "fluid leaking", "loss of fluid", "fluid from the vagina"],
+      "message": "Fluid leakage during pregnancy was reported. Stop the questions and seek emergency care now. Call emergency services or go to the nearest hospital.",
+      "source": "WHO maternal danger signs; Nigeria Federal Ministry of Health ANC Orientation Package and Safe Motherhood guidance",
+      "reviewed_by_clinician": false
+    },
+    {
+      "id": "obstetric_severe_abdominal_pain",
+      "pathways": ["pregnancy_trimester_1", "pregnancy_trimester_2", "pregnancy_trimester_3", "pregnancy_trimester_unknown", "postpartum", "unknown"],
+      "level": "EMERGENCY_NOW",
+      "patterns": ["severe abdominal pain", "severe stomach pain"],
+      "message": "Severe abdominal pain was reported. Stop the questions and seek emergency care now. Call emergency services or go to the nearest hospital.",
+      "source": "WHO maternal danger signs; Nigeria Federal Ministry of Health ANC Orientation Package and Safe Motherhood guidance",
+      "reviewed_by_clinician": false
+    },
+    {
+      "id": "pregnancy_fever_with_chills_same_day",
+      "pathways": ["pregnancy_trimester_1", "pregnancy_trimester_2", "pregnancy_trimester_3", "pregnancy_trimester_unknown", "unknown"],
+      "level": "SEE_CLINICIAN_TODAY",
+      "patterns": ["fever.{0,60}chills", "chills.{0,60}fever"],
+      "message": "Fever with chills during pregnancy was reported. Contact a clinician and attend care today.",
+      "source": "WHO maternal danger signs; Nigeria Federal Ministry of Health ANC Orientation Package and Safe Motherhood guidance",
+      "reviewed_by_clinician": false
+    },
+    {
+      "id": "postpartum_severe_abdominal_pain",
+      "pathways": ["postpartum"],
+      "level": "EMERGENCY_NOW",
+      "patterns": ["severe abdominal pain", "severe stomach pain"],
+      "message": "A postpartum danger sign was reported. Stop the questions and seek emergency care now. Call emergency services or go to the nearest hospital.",
+      "source": "WHO danger signs after childbirth; Nigeria Federal Ministry of Health postpartum care and Safe Motherhood guidance",
+      "reviewed_by_clinician": false
+    },
+    {
+      "id": "postpartum_fever_foul_discharge",
+      "pathways": ["postpartum", "unknown"],
+      "level": "EMERGENCY_NOW",
+      "patterns": ["fever.{0,80}(foul-smelling|foul smelling|bad-smelling|bad smelling).{0,40}discharge", "(foul-smelling|foul smelling|bad-smelling|bad smelling).{0,40}discharge.{0,80}fever"],
+      "message": "Fever with foul-smelling discharge after delivery was reported. Stop the questions and seek emergency care now. Call emergency services or go to the nearest hospital.",
+      "source": "WHO danger signs after childbirth; Nigeria Federal Ministry of Health postpartum care and Safe Motherhood guidance",
+      "reviewed_by_clinician": false
+    },
+    {
+      "id": "postpartum_increased_vaginal_bleeding",
+      "pathways": ["postpartum", "unknown"],
+      "level": "EMERGENCY_NOW",
+      "patterns": ["increased vaginal bleeding", "vaginal bleeding has increased", "increased bleeding", "bleeding is increasing", "bleeding getting heavier", "heavy bleeding", "heavy bleeding after delivery", "heavy postpartum bleeding", "bleeding heavily after birth"],
+      "message": "Increased or heavy bleeding after delivery was reported. Stop the questions and seek emergency care now. Call emergency services or go to the nearest hospital.",
+      "source": "WHO Recommendations on Postnatal Care of the Mother and Newborn (2013), postpartum danger signs; Nigeria Federal Ministry of Health and Social Welfare, National Guideline for the Management of Postpartum Haemorrhage (2024)",
+      "reviewed_by_clinician": false
+    },
+    {
+      "id": "postpartum_breathing_difficulty",
+      "pathways": ["postpartum", "unknown"],
+      "level": "EMERGENCY_NOW",
+      "patterns": ["fast breathing", "breathing fast", "difficult breathing", "difficulty breathing", "trouble breathing", "shortness of breath", "cannot breathe", "not breathing"],
+      "message": "Fast or difficult breathing after delivery was reported. Stop the questions and seek emergency care now. Call emergency services or go to the nearest hospital.",
+      "source": "WHO Recommendations on Postnatal Care of the Mother and Newborn (2013), postpartum danger signs",
+      "reviewed_by_clinician": false
+    }
+  ]
+}

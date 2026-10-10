@@ -1,0 +1,1 @@
+"""QuickHealth automated tests."""

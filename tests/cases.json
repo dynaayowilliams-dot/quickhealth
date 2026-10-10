@@ -1,0 +1,174 @@
+{
+  "description": "Fictional QuickHealth evaluation cases; no real patient information.",
+  "cases": [
+    {
+      "id": "P1",
+      "pathway": "paediatric",
+      "initial_question": "Describe the main concern for this fictional child.",
+      "scripted_answers": ["Fictional 8-month-old child has had fever for 2 days, is feeding well, and remains playful."],
+      "scripted_model_questions": ["Has the child been difficult to wake, unable to feed, or had any other danger signs?"],
+      "key_question": "danger signs",
+      "expected_key_question_asked": true,
+      "expected_urgency": "SEE_CLINICIAN_TODAY",
+      "expected_contradiction": false
+    },
+    {
+      "id": "P2",
+      "pathway": "paediatric",
+      "initial_question": "Describe the main concern for this fictional child.",
+      "scripted_answers": ["Fictional 3-month-old is feeding a little less, sleeping a lot, and hard to wake."],
+      "scripted_model_questions": [],
+      "key_question": "hard to wake",
+      "expected_key_question_asked": false,
+      "expected_urgency": "EMERGENCY_NOW",
+      "expected_contradiction": false
+    },
+    {
+      "id": "P3",
+      "pathway": "paediatric",
+      "initial_question": "Describe the main concern for this fictional child.",
+      "scripted_answers": ["Fictional 2-year-old had a convulsion this morning; caregiver says the child seems fine now."],
+      "scripted_model_questions": [],
+      "key_question": "convulsion",
+      "expected_key_question_asked": false,
+      "expected_urgency": "EMERGENCY_NOW",
+      "expected_contradiction": false
+    },
+    {
+      "id": "P4",
+      "pathway": "paediatric",
+      "initial_question": "Describe the main concern for this fictional child.",
+      "scripted_answers": ["Fictional 4-year-old has had diarrhoea for 2 days, is lethargic, and is not able to drink."],
+      "scripted_model_questions": [],
+      "key_question": "not able to drink",
+      "expected_key_question_asked": false,
+      "expected_urgency": "EMERGENCY_NOW",
+      "expected_contradiction": false
+    },
+    {
+      "id": "P5",
+      "pathway": "paediatric",
+      "initial_question": "Describe the main concern for this fictional child.",
+      "scripted_answers": ["Fictional 5-year-old has had a cough for 3 days, fast breathing, and bluish lips."],
+      "scripted_model_questions": [],
+      "key_question": "bluish lips",
+      "expected_key_question_asked": false,
+      "expected_urgency": "EMERGENCY_NOW",
+      "expected_contradiction": false
+    },
+    {
+      "id": "P6",
+      "pathway": "paediatric",
+      "initial_question": "Describe the main concern for this fictional child.",
+      "scripted_answers": [
+        "A fictional child is 3 months old.",
+        "The caregiver describes the child as eating pap and family food and starting to walk."
+      ],
+      "scripted_model_questions": ["What foods is the child eating, and which movement milestones have been reached?"],
+      "key_question": "foods",
+      "expected_key_question_asked": true,
+      "expected_urgency": "SEE_CLINICIAN_TODAY",
+      "expected_contradiction": true,
+      "stop_on_clarification": true
+    },
+    {
+      "id": "O1",
+      "pathway": "antenatal",
+      "initial_question": "Describe the main concern for this fictional pregnancy.",
+      "scripted_answers": ["Fictional patient is 28 weeks pregnant and has had a small headache for 2 days.", "Yes, blurred vision has occurred."],
+      "scripted_model_questions": ["Have you had blurred vision or any change in your vision?"],
+      "key_question": "blurred vision",
+      "expected_key_question_asked": true,
+      "expected_urgency": "EMERGENCY_NOW",
+      "expected_contradiction": false
+    },
+    {
+      "id": "O2",
+      "pathway": "antenatal",
+      "initial_question": "Describe the main concern for this fictional pregnancy.",
+      "scripted_answers": ["Fictional patient is 12 weeks pregnant, has nausea and vomits twice daily, but keeps fluids down.", "No, none of the listed pregnancy danger signs have been reported."],
+      "scripted_model_questions": ["Have any pregnancy danger signs occurred, including severe headache with blurred vision, vaginal bleeding, convulsions, reduced fetal movement, leaking fluid, severe abdominal pain, or fever with chills?"],
+      "key_question": "danger signs",
+      "expected_key_question_asked": true,
+      "expected_urgency": "ROUTINE",
+      "expected_contradiction": false
+    },
+    {
+      "id": "O3",
+      "pathway": "antenatal",
+      "initial_question": "Describe the main concern for this fictional pregnancy.",
+      "scripted_answers": ["Fictional patient is 34 weeks pregnant with a small amount of painless vaginal bleeding."],
+      "scripted_model_questions": [],
+      "key_question": "vaginal bleeding",
+      "expected_key_question_asked": false,
+      "expected_urgency": "EMERGENCY_NOW",
+      "expected_contradiction": false
+    },
+    {
+      "id": "O4",
+      "pathway": "antenatal",
+      "initial_question": "Describe the main concern for this fictional pregnancy.",
+      "scripted_answers": ["Fictional patient is 36 weeks pregnant; the baby has been moving much less since yesterday.", "Movement has continued to be much less than usual."],
+      "scripted_model_questions": ["Can you clarify whether fetal movement is reduced compared with usual?"],
+      "key_question": "fetal movement",
+      "expected_key_question_asked": true,
+      "expected_urgency": "SEE_CLINICIAN_TODAY",
+      "expected_contradiction": false
+    },
+    {
+      "id": "O5",
+      "pathway": "antenatal",
+      "initial_question": "Describe the main concern for this fictional pregnancy.",
+      "scripted_answers": ["The fictional patient is currently pregnant.", "A previously stated gestational age is 30 weeks.", "The LMP was {{LMP_2_MONTHS_AGO}} and that date is certain."],
+      "scripted_model_questions": ["What gestational age was previously stated?", "What was the first day of the LMP, and is the date certain?"],
+      "key_question": "LMP",
+      "expected_key_question_asked": true,
+      "expected_urgency": "SEE_CLINICIAN_TODAY",
+      "expected_contradiction": true,
+      "stop_on_clarification": true
+    },
+    {
+      "id": "O6",
+      "pathway": "postpartum",
+      "initial_question": "Describe the main concern for this fictional postpartum patient.",
+      "scripted_answers": ["Fictional patient is postpartum day 5 with fever and foul-smelling discharge."],
+      "scripted_model_questions": [],
+      "key_question": "foul-smelling discharge",
+      "expected_key_question_asked": false,
+      "expected_urgency": "EMERGENCY_NOW",
+      "expected_contradiction": false
+    },
+    {
+      "id": "O7",
+      "pathway": "antenatal",
+      "initial_question": "Describe the main concern for this fictional pregnancy.",
+      "scripted_answers": ["Fictional patient is 20 weeks pregnant and has fever with chills, with no other symptoms."],
+      "scripted_model_questions": [],
+      "key_question": "fever with chills",
+      "expected_key_question_asked": false,
+      "expected_urgency": "SEE_CLINICIAN_TODAY",
+      "expected_contradiction": false
+    },
+    {
+      "id": "G1",
+      "pathway": "general",
+      "initial_question": "Describe the main concern for this fictional adult.",
+      "scripted_answers": [
+        "Fictional adult reports chest pain.",
+        "Fictional adult, age 35 years.",
+        "The main concern is chest pain.",
+        "The concern began today; other details were not supplied.",
+        "No past medical conditions were reported.",
+        "No past surgeries or procedures were reported.",
+        "No prescribed medicines were reported.",
+        "No herbal or traditional remedies are used."
+      ],
+      "scripted_model_questions": [],
+      "complete_after_each_answer": true,
+      "key_question": "over-the-counter",
+      "expected_key_question_asked": true,
+      "expected_urgency": "SEE_CLINICIAN_TODAY",
+      "expected_contradiction": false
+    }
+  ]
+}

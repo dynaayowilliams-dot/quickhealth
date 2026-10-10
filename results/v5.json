@@ -1,0 +1,121 @@
+{
+  "version": "v5",
+  "evaluated_at_utc": "2026-10-10T13:39:41.966607+00:00",
+  "case_count": 14,
+  "passed": 14,
+  "failed": 0,
+  "results": [
+    {
+      "case_id": "P1",
+      "expected_urgency": "SEE_CLINICIAN_TODAY",
+      "actual_urgency": "SEE_CLINICIAN_TODAY",
+      "key_question_asked": true,
+      "contradiction_caught": false,
+      "pass": true
+    },
+    {
+      "case_id": "P2",
+      "expected_urgency": "EMERGENCY_NOW",
+      "actual_urgency": "EMERGENCY_NOW",
+      "key_question_asked": false,
+      "contradiction_caught": false,
+      "pass": true
+    },
+    {
+      "case_id": "P3",
+      "expected_urgency": "EMERGENCY_NOW",
+      "actual_urgency": "EMERGENCY_NOW",
+      "key_question_asked": false,
+      "contradiction_caught": false,
+      "pass": true
+    },
+    {
+      "case_id": "P4",
+      "expected_urgency": "EMERGENCY_NOW",
+      "actual_urgency": "EMERGENCY_NOW",
+      "key_question_asked": false,
+      "contradiction_caught": false,
+      "pass": true
+    },
+    {
+      "case_id": "P5",
+      "expected_urgency": "EMERGENCY_NOW",
+      "actual_urgency": "EMERGENCY_NOW",
+      "key_question_asked": false,
+      "contradiction_caught": false,
+      "pass": true
+    },
+    {
+      "case_id": "P6",
+      "expected_urgency": "SEE_CLINICIAN_TODAY",
+      "actual_urgency": "SEE_CLINICIAN_TODAY",
+      "key_question_asked": true,
+      "contradiction_caught": true,
+      "pass": true
+    },
+    {
+      "case_id": "O1",
+      "expected_urgency": "EMERGENCY_NOW",
+      "actual_urgency": "EMERGENCY_NOW",
+      "key_question_asked": true,
+      "contradiction_caught": false,
+      "pass": true
+    },
+    {
+      "case_id": "O2",
+      "expected_urgency": "ROUTINE",
+      "actual_urgency": "ROUTINE",
+      "key_question_asked": true,
+      "contradiction_caught": false,
+      "pass": true
+    },
+    {
+      "case_id": "O3",
+      "expected_urgency": "EMERGENCY_NOW",
+      "actual_urgency": "EMERGENCY_NOW",
+      "key_question_asked": false,
+      "contradiction_caught": false,
+      "pass": true
+    },
+    {
+      "case_id": "O4",
+      "expected_urgency": "EMERGENCY_NOW",
+      "actual_urgency": "EMERGENCY_NOW",
+      "key_question_asked": false,
+      "contradiction_caught": false,
+      "pass": true
+    },
+    {
+      "case_id": "O5",
+      "expected_urgency": "SEE_CLINICIAN_TODAY",
+      "actual_urgency": "SEE_CLINICIAN_TODAY",
+      "key_question_asked": true,
+      "contradiction_caught": true,
+      "pass": true
+    },
+    {
+      "case_id": "O6",
+      "expected_urgency": "EMERGENCY_NOW",
+      "actual_urgency": "EMERGENCY_NOW",
+      "key_question_asked": false,
+      "contradiction_caught": false,
+      "pass": true
+    },
+    {
+      "case_id": "O7",
+      "expected_urgency": "SEE_CLINICIAN_TODAY",
+      "actual_urgency": "SEE_CLINICIAN_TODAY",
+      "key_question_asked": false,
+      "contradiction_caught": false,
+      "pass": true
+    },
+    {
+      "case_id": "G1",
+      "expected_urgency": "SEE_CLINICIAN_TODAY",
+      "actual_urgency": "SEE_CLINICIAN_TODAY",
+      "key_question_asked": true,
+      "contradiction_caught": false,
+      "pass": true
+    }
+  ]
+}
