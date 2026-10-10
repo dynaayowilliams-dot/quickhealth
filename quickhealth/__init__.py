@@ -1,0 +1,1 @@
+"""QuickHealth clerking application package."""
