@@ -25,6 +25,28 @@
   "session_metrics": {
     "turn_count": 2
   },
+  "summary": {
+    "intent": "Add a neatHack 2026 attribution to README.md, commit it with the requested message, and push to origin main while excluding .env, .venv, and data. Then append a second checkpoint line without committing or pushing.",
+    "outcome": "The attribution was committed as 2cecaf3 and the push command reported “Everything up-to-date.” The checkpoint line was then appended to README.md and left uncommitted and unpushed.",
+    "learnings": {
+      "repo": [],
+      "code": [
+        {
+          "path": "README.md",
+          "finding": "The README was edited twice: first to add the hackathon attribution, then to append the checkpoint test line. No line numbers were given."
+        }
+      ],
+      "workflow": [
+        "Staging README.md by path kept the commit limited to that file and excluded the specified paths.",
+        "The follow-up edit was intentionally left uncommitted and unpushed."
+      ]
+    },
+    "friction": [
+      "Git could not create its index lock under the initial filesystem permissions.",
+      "The initial push check could not reach GitHub from the sandbox, requiring a retry with network access."
+    ],
+    "open_items": []
+  },
   "initial_attribution": {
     "calculated_at": "2026-10-10T15:51:20.2215191Z",
     "agent_lines": 0,
