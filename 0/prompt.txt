@@ -1,0 +1,5 @@
+Be honest and specific. Did the evaluation runs (run_eval.py) use real calls to the language model, or scripted or fake model responses? Is a neatlogs trace created for each evaluated case? Do not read, print or open the .env file; if you need to know whether a variable exists, ask me. Tell me in plain language what is real and what is not, and what I need to do to get real model calls and real traces. Do not commit or push.
+
+---
+
+Add an "Evaluation scope" section to README.md. State plainly that run_eval.py is a scripted behaviour check of the rules-based safety layer, the completeness check and the contradiction check, using fixed answers and no live language model calls. State that it does not measure language-model quality. List what is covered and what is not. Also add a list of "Not yet tested: live model behaviour with real conversations". Do not claim clinical validation. Do not commit or push.
