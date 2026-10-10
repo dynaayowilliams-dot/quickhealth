@@ -1,0 +1,27 @@
+I am building QuickHealth, a hackathon prototype for structured clerking and triage history-taking in Nigeria. It asks adaptive history questions, checks history completeness and contradictions, and uses rules-based red-flag rules to set urgency. It is not a diagnostic tool or medical advice, and it is for fictional cases only. A health professional must review its outputs.
+
+My potential paying customers are clinics and health facilities in Nigeria. The day-to-day users could include nurses and community health workers, especially in antenatal and paediatric units. For this first model, count one clinic or facility as one customer account; do not count each staff member separately.
+
+I want to compare two pricing options. These are ASSUMPTIONS for testing, not validated market prices:
+- US$1.00 per completed clerking session (approximately ₦1,600).
+- US$75 per clinic per month (approximately ₦120,000).
+The naira conversions are approximate and use an ASSUMPTION exchange rate of ₦1,600 per US$1. Please let me change that rate. Use the clinic-per-month option for the Base and Growth revenue scenarios; do not add the per-session price on top of the subscription.
+
+The local usage aggregate currently has 0 completed sessions with recorded token usage. Because cost_report.py has no recorded tokens to price, I do not have a measured inference cost per session. Use US$0.01 per completed session (approximately ₦16) as an ESTIMATE / ASSUMPTION only. Replace it with the measured average from cost_report.py when real token usage is available. Do not present this estimate as an actual cost.
+
+My estimated monthly infrastructure costs are ASSUMPTIONS, not provider quotes:
+- Hosting: US$25 per month (approximately ₦40,000) for one small server and its disk.
+- Database: US$0 per month (approximately ₦0) because the current prototype uses SQLite on the same server; this excludes backups and durable storage.
+- Tracing: US$0 per month (approximately ₦0), assuming it stays within the hackathon or included allowance. Flag that I need to verify any plan limits or overage charges.
+Use US$25 per month (approximately ₦40,000) as total infrastructure cost in the scenarios, separate from inference cost.
+
+Build these monthly scenarios from the assumptions below. Treat the customer counts and session usage as assumptions, and calculate revenue and gross profit from the model drivers:
+- Base: ASSUMPTION of 5 clinic customers and 250 completed sessions per clinic per month. At US$75 per clinic per month, expected revenue is US$375 (approximately ₦600,000). At the estimated US$0.01 inference cost per session plus US$25 infrastructure, infrastructure plus inference cost is US$37.50 (approximately ₦60,000), gross profit is US$337.50 (approximately ₦540,000), and gross margin is 90.0%.
+- Growth: ASSUMPTION of 15 clinic customers and 400 completed sessions per clinic per month. At US$75 per clinic per month, expected revenue is US$1,125 (approximately ₦1,800,000). At the estimated US$0.01 inference cost per session plus US$25 infrastructure, infrastructure plus inference cost is US$85 (approximately ₦136,000), gross profit is US$1,040 (approximately ₦1,664,000), and gross margin is 92.4%.
+These scenario values are calculations from assumptions, not actual sales or measured performance.
+
+For a simple runway estimate, use an ASSUMPTION of US$5,000 starting cash (approximately ₦8,000,000) and ASSUMPTION of US$1,500 per month in fixed costs (approximately ₦2,400,000), excluding hosting and inference. Show monthly net burn after gross profit and calculate runway from starting cash divided by that burn. Label the result as a simplified estimate, not a cash-flow forecast.
+
+Please include these risks: the red-flag rules have not been reviewed by a clinician and need review by a qualified clinician familiar with current Nigerian guidance; appropriate Nigerian regulatory and privacy review is needed before real-world use; the prototype has not been clinically validated; live model behavior has not been evaluated with real conversations; outputs can be wrong; and pricing, customer demand, usage, inference, infrastructure, tracing, and foreign-exchange assumptions are not validated. Do not invent market-size figures, customer statistics, or evidence of demand. Clearly separate assumptions from actuals and calculations.
+
+Build the model with Base and Growth scenarios, show unit economics per session, show monthly runway, and flag any assumption you think is unrealistic.

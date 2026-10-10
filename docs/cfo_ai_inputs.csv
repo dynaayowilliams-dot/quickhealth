@@ -1,0 +1,33 @@
+metric,Base,Growth,unit,basis,notes
+Exchange rate,1600,1600,NGN per USD,ASSUMPTION,Planning conversion only; update to the rate used by the business.
+Pricing - per completed clerking session - USD,1.00,1.00,USD per completed session,ASSUMPTION,Alternative pricing option; not used in scenario revenue.
+Pricing - per completed clerking session - NGN,1600,1600,NGN per completed session,ASSUMPTION,Converted at the assumed exchange rate.
+Pricing - per clinic per month - USD,75,75,USD per clinic per month,ASSUMPTION,Subscription option used for scenario revenue.
+Pricing - per clinic per month - NGN,120000,120000,NGN per clinic per month,ASSUMPTION,Converted at the assumed exchange rate.
+customers,5,15,clinic accounts,ASSUMPTION,Paying clinic or facility accounts; not individual clinicians.
+Completed sessions per clinic per month,250,400,sessions per clinic per month,ASSUMPTION,Usage assumption for the scenario.
+Completed sessions per month,1250,6000,sessions per month,CALCULATED FROM ASSUMPTIONS,Customers multiplied by sessions per clinic.
+Inference cost per completed session - USD,0.01,0.01,USD per session,ESTIMATE / ASSUMPTION,No recorded completed sessions with token usage were available in the local aggregate; replace using cost_report.py.
+Inference cost per completed session - NGN,16,16,NGN per session,ESTIMATE / ASSUMPTION,Converted at the assumed exchange rate.
+Hosting - USD per month,25,25,USD per month,ESTIMATE / ASSUMPTION,Single small EC2 server and disk planning allowance; verify against AWS Billing and hackathon credits.
+Hosting - NGN per month,40000,40000,NGN per month,ESTIMATE / ASSUMPTION,Converted at the assumed exchange rate.
+Database - USD per month,0,0,USD per month,ESTIMATE / ASSUMPTION,SQLite on the same host; excludes backups and durable storage.
+Database - NGN per month,0,0,NGN per month,ESTIMATE / ASSUMPTION,Converted at the assumed exchange rate.
+Tracing - USD per month,0,0,USD per month,ESTIMATE / ASSUMPTION,Assumes no charge beyond hackathon or included allowance; verify plan limits.
+Tracing - NGN per month,0,0,NGN per month,ESTIMATE / ASSUMPTION,Converted at the assumed exchange rate.
+Total infrastructure - USD per month,25,25,USD per month,CALCULATED FROM ASSUMPTIONS,Hosting plus database plus tracing.
+Total infrastructure - NGN per month,40000,40000,NGN per month,CALCULATED FROM ASSUMPTIONS,Converted at the assumed exchange rate.
+revenue,375,1125,USD per month,CALCULATED FROM ASSUMPTIONS,Customers multiplied by clinic monthly price.
+revenue (NGN),600000,1800000,NGN per month,CALCULATED FROM ASSUMPTIONS,Converted at the assumed exchange rate.
+infrastructure plus inference cost,37.50,85,USD per month,CALCULATED FROM ASSUMPTIONS,Total infrastructure plus completed sessions multiplied by inference cost per session.
+infrastructure plus inference cost (NGN),60000,136000,NGN per month,CALCULATED FROM ASSUMPTIONS,Converted at the assumed exchange rate.
+gross profit,337.50,1040,USD per month,CALCULATED FROM ASSUMPTIONS,Revenue less infrastructure plus inference cost.
+gross profit (NGN),540000,1664000,NGN per month,CALCULATED FROM ASSUMPTIONS,Converted at the assumed exchange rate.
+gross margin,90.0,92.4,percent,CALCULATED FROM ASSUMPTIONS,Gross profit divided by revenue.
+Starting cash - USD,5000,5000,USD,ASSUMPTION,Illustrative opening cash balance for runway only.
+Starting cash - NGN,8000000,8000000,NGN,ASSUMPTION,Converted at the assumed exchange rate.
+Monthly fixed costs excluding infrastructure and inference - USD,1500,1500,USD per month,ASSUMPTION,Placeholder for product maintenance support and basic administration.
+Monthly fixed costs excluding infrastructure and inference - NGN,2400000,2400000,NGN per month,ASSUMPTION,Converted at the assumed exchange rate.
+Monthly net cash burn - USD,1162.50,460,USD per month,CALCULATED FROM ASSUMPTIONS,Fixed costs less gross profit; positive values mean cash outflow.
+Monthly net cash burn - NGN,1860000,736000,NGN per month,CALCULATED FROM ASSUMPTIONS,Converted at the assumed exchange rate.
+Simple runway,4.3,10.9,months,CALCULATED FROM ASSUMPTIONS,Starting cash divided by monthly net cash burn; simplified and excludes working capital effects.
