@@ -1,0 +1,5 @@
+Add one line at the end of README.md saying: "Built during neatHack 2026 with Codex, Entire and neatlogs." Then commit it with the message "Add hackathon note to README" and push to origin main. Do not commit .env, the .venv folder, or the data folder. I authorize this commit and push.
+
+---
+
+Add one more line at the end of README.md saying: "Entire checkpoint test, third attempt." Do not commit and do not push. Just make the edit and tell me when it is done.
