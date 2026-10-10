@@ -117,3 +117,4 @@ The rule file itself lists the source attached to each rule. The rules and wordi
 ## Development checkpoints
 
 Git commits and pushes publish code checkpoints on the repository's `main` branch. Entire recordings are a separate record of the coding-agent work session; they do not replace the code history in Git.
+Built during neatHack 2026 with Codex, Entire and neatlogs.
