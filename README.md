@@ -72,6 +72,25 @@ The repository owner has Entire CLI enabled to record coding-agent work sessions
 
 ## Scripted evaluation results
 
+### Evaluation scope
+
+`run_eval.py` is a scripted behaviour check of the rules-based safety layer, the completeness check, and the contradiction check. It uses fixed fictional answers and scripted model responses; it makes **no live language model calls**. It does not measure language-model quality.
+
+Covered by the scripted evaluation:
+
+- Whether selected fictional inputs produce the expected rules-based urgency.
+- Whether the scripted workflow asks specified key questions.
+- Whether the contradiction check catches the expected scripted conflict.
+- Separately, when `--demo-recovery` is used, whether a simulated temporary SQLite write failure is retried successfully.
+
+Not covered by the scripted evaluation:
+
+- Live model behaviour with real conversations.
+- The quality, safety, or consistency of questions or notes produced by a live language model.
+- Clinical safety, accuracy, or improved health outcomes.
+
+Not yet tested: live model behaviour with real conversations. The cases are fictional, and this project has not been clinically validated.
+
 The repository's saved fictional-case results show these totals:
 
 | Evaluation | Passed | Failed |
