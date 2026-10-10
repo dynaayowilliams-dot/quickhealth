@@ -1,0 +1,63 @@
+Set up Agent Toolkit for AWS by following instructions:
+https://raw.githubusercontent.com/aws/agent-toolkit-for-aws/refs/heads/main/setup-instructions/setup.md
+
+---
+
+Quickhealth
+
+---
+
+new
+
+---
+
+us-east-1
+
+---
+
+proceed
+
+---
+
+lets t
+
+---
+
+leave the aws
+
+---
+
+switch the region to accomodate Nigeria
+
+---
+
+no not the aws profile to be set to africa, i mean let nigerians have access to my app, no geo blocking
+
+---
+
+great so now i want my app to run on the internet, run it baby
+
+---
+
+Prepare QuickHealth for deployment on a single AWS EC2 Linux server, without running any AWS command, logging in to anything, or reading the .env file. Create a folder deploy/aws/ with: (1) README.md with plain-language, click-by-click steps using the AWS web console only (no CLI): launch one small Linux instance in us-east-1 within the hackathon allowance, connect using the browser-based connect option, open only the ports needed, and shut everything down afterwards; (2) setup.sh that installs Python, clones my public GitHub repo, creates a virtual environment, installs requirements.txt, and runs the app as a service that restarts on failure; (3) a systemd unit file; (4) a template file for environment variables listing names only, never values, with instructions to type the real values on the server by hand and never put them in the repo.
+
+---
+
+Also add an optional access-code gate to app.py: if QUICKHEALTH_ACCESS_CODE is set in the environment, the app asks for it before starting a case, so a public link cannot be used freely against my model key. Add a Streamlit config that turns off usage stats. State plainly in deploy/aws/README.md that the app is for fictional cases only, that Amazon Bedrock is not available in the hackathon accounts, and that I must set a budget alert and stop the instance when finished. Do not commit or push.
+
+---
+
+Create docs/cfo_ai_business_plan.md and docs/cfo_ai_inputs.csv, a business plan for QuickHealth that I can enter into cfo.ai. cfo.ai models pricing, costs, revenue and runway, and its example uses two scenarios, Base and Growth, with these rows: customers, revenue, infrastructure plus inference cost, gross profit, gross margin.
+
+---
+
+Include: (1) the target customer (clinics, community health workers, antenatal and paediatric units in Nigeria); (2) two pricing options, per completed clerking session and per clinic per month, in USD and naira; (3) cost per session, taken from cost_report.py or the real token counts if available, otherwise clearly labelled ESTIMATES; (4) infrastructure cost per month (hosting, database, tracing); (5) Base and Growth scenarios with customers, revenue, infrastructure plus inference cost, gross profit and gross margin; (6) a simple runway estimate with an assumed starting cash amount and monthly fixed costs; (7) a list of risks, including that the rules are unreviewed by a clinician and need regulatory review before real use.
+Mark every number that is an assumption as ASSUMPTION. Do not invent market statistics or cite sources you cannot verify. Do not commit or push.
+
+---
+
+Create docs/ari_prompt.txt: one plain-text message I can paste into cfo.ai's AI CFO (Ari) so it builds a business model for QuickHealth. Write it in the first person, in plain language, and include: what QuickHealth is and who pays for it (clinics, community health workers, antenatal and paediatric units in Nigeria); two pricing options (per completed clerking session, and per clinic per month) in USD with the naira equivalent labelled as approximate; cost per session using the real numbers from cost_report.py if live model calls have been made, otherwise clearly labelled ESTIMATES; monthly infrastructure cost for hosting, database and tracing; a Base scenario and a Growth scenario with customers, revenue, infrastructure plus inference cost, gross profit and gross margin; starting cash and monthly fixed costs for a runway estimate, labelled as ASSUMPTIONS; and the main risks, including that the red-flag rules are unreviewed by a clinician. End with these requests: build the model with Base and Growth scenarios, show unit economics per session, show monthly runway, and flag any assumption you think is unrealistic. Do not invent market statistics. Do not commit or push.
+
+---
+
+what do i paste to ari
