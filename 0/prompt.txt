@@ -1,0 +1,9 @@
+the images are not loading on the url
+
+---
+
+how to check if it worked
+
+---
+
+how to commit manually
