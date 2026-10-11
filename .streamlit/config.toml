@@ -12,3 +12,6 @@ secondaryBackgroundColor = "#E4EDE2"
 
 [browser]
 gatherUsageStats = false
+
+[client]
+toolbarMode = "minimal"

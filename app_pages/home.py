@@ -6,7 +6,7 @@ import streamlit as st
 
 
 HOME_STYLES = """<style>
-      .block-container { max-width: 1120px; padding-top: 1.1rem; }
+      .block-container { box-sizing:border-box; width:100%; max-width:960px; margin-inline:auto; padding:max(clamp(5rem, 9vh, 7rem), calc(env(safe-area-inset-top) + 2rem)) max(1.5rem, env(safe-area-inset-left)) max(3rem, env(safe-area-inset-bottom)) max(1.5rem, env(safe-area-inset-right)); }
       .qh-home { color: #1F2D2A; font-family: ui-rounded, "SF Pro Rounded", "Segoe UI", system-ui, sans-serif; line-height: 1.6; }
       .qh-home * { box-sizing: border-box; }
       .qh-home h1, .qh-home h2, .qh-home h3 { color: #0F4C3A; line-height: 1.12; letter-spacing: -.035em; }

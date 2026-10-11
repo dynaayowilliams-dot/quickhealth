@@ -87,20 +87,30 @@ def render_urgency(st, urgency):
 
 def apply_app_style(st):
     """Apply the QuickHealth light theme and shared component styling."""
-    st.html("""<style>
+    st.markdown("""<style>
         :root {color-scheme: light; --qh-bg:#FFFBF7; --qh-surface:#E4EDE2; --qh-green:#0F4C3A; --qh-text:#1F2D2A; --qh-border:#87958D;}
         html, body, [data-testid="stApp"], [data-testid="stAppViewContainer"] {color:var(--qh-text)!important; background:var(--qh-bg)!important;}
         [data-testid="stHeader"], [data-testid="stToolbar"], [data-testid="stDecoration"] {background:var(--qh-bg)!important; color:var(--qh-text)!important;}
         [data-testid="stSidebar"], [data-testid="stSidebar"]>div {background:var(--qh-surface)!important; color:var(--qh-text)!important;}
         [data-testid="stMarkdownContainer"], [data-testid="stCaptionContainer"], [data-testid="stWidgetLabel"], label, small {color:var(--qh-text)!important;}
-        .block-container {max-width:1120px; padding: max(2rem, env(safe-area-inset-top)) max(1.5rem, env(safe-area-inset-left)) max(3rem, env(safe-area-inset-bottom)) max(1.5rem, env(safe-area-inset-right));}
-        [data-testid="stCheckbox"] label {min-height:44px; display:flex; align-items:center; gap:.65rem; padding:.35rem .25rem; cursor:pointer;}
-        [data-testid="stCheckbox"] input {width:20px; height:20px;}
+        [data-testid="stMainBlockContainer"], .stMainBlockContainer, .block-container {box-sizing:border-box!important; width:100%!important; max-width:960px!important; margin-inline:auto!important; padding:max(clamp(5rem, 9vh, 7rem), calc(env(safe-area-inset-top) + 2rem)) max(1.5rem, env(safe-area-inset-left)) max(3rem, env(safe-area-inset-bottom)) max(1.5rem, env(safe-area-inset-right))!important;}
+        [data-testid="stCheckbox"] label {min-height:48px; display:flex; align-items:center; gap:.65rem; padding:.4rem .25rem; cursor:pointer;}
+        [data-testid="stCheckbox"] input {width:22px; height:22px;}
         [data-testid="stVerticalBlockBorderWrapper"] {border:1px solid #CFD9D0; border-radius:22px; background:var(--qh-bg);}
         [data-testid="stChatMessage"] {color:var(--qh-text)!important; border:1px solid #CFD9D0; border-radius:22px; padding:1rem 1.15rem; background:var(--qh-surface)!important;}
         [data-testid="stChatInput"], [data-testid="stChatInput"]>div, [data-testid="stChatInput"] textarea, [data-testid="stTextInput"] input, [data-testid="stSelectbox"] [role="combobox"] {color:var(--qh-text)!important; background:var(--qh-bg)!important; border-color:var(--qh-border)!important; border-radius:14px;}
         input::placeholder, textarea::placeholder {color:#485852!important; opacity:1;}
-        button[kind="primary"] {color:#fff!important; background:var(--qh-green)!important; border-color:var(--qh-green)!important; border-radius:999px; font-weight:700;}
+        [data-testid="stBaseButton-primary"], [data-testid="stBaseButton-secondary"] {min-height:48px;}
+        [data-testid="stBaseButton-primary"], [data-testid="stBaseButton-primary"] p, [data-testid="stBaseButton-primary"] span, [data-testid="stBaseButton-primary"] div,
+        [data-testid="stBaseButton-secondary"], [data-testid="stBaseButton-secondary"] p, [data-testid="stBaseButton-secondary"] span, [data-testid="stBaseButton-secondary"] div {color:#FFFFFF!important; background:#0F4C3A!important; border-color:#0F4C3A!important; border-radius:999px; font-weight:700;}
+        [data-testid="stBaseButton-primary"] *, [data-testid="stBaseButton-secondary"] * {color:#FFFFFF!important;}
+        [data-testid="stBaseButton-primary"]:hover, [data-testid="stBaseButton-primary"]:focus,
+        [data-testid="stBaseButton-primary"]:active, [data-testid="stBaseButton-primary"]:disabled,
+        [data-testid="stBaseButton-secondary"]:hover, [data-testid="stBaseButton-secondary"]:focus,
+        [data-testid="stBaseButton-secondary"]:active, [data-testid="stBaseButton-secondary"]:disabled {color:#FFFFFF!important; background:#0F4C3A!important; border-color:#0F4C3A!important; opacity:1;}
+        [data-testid="stBaseButton-primary"] button *, [data-testid="stBaseButton-secondary"] button * {color:#FFFFFF!important;}
+        [data-testid="stToolbar"], [data-testid="stAppDeployButton"], [data-testid="stMainMenu"], #MainMenu,
+        [data-testid="stDecoration"], [data-testid="stFooter"], footer:not(.qh-footer) {display:none!important; visibility:hidden!important;}
         [data-testid="stAlert"] {color:var(--qh-text)!important; background:var(--qh-surface)!important; border:1px solid var(--qh-border)!important; border-radius:16px;}
         [data-testid="stAlert"] * {color:var(--qh-text)!important;}
         [data-testid="stProgress"] [role="progressbar"] {background:#87958D!important;}
@@ -114,11 +124,11 @@ def apply_app_style(st):
         .qh-urgency--routine {color:#124E48; background:#E2F2F0; border-color:#24756C;}
         .qh-urgency--unknown {color:var(--qh-text); background:var(--qh-surface); border-color:var(--qh-border);}
         @media (max-width: 640px) {
-            .block-container {padding: max(1.2rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-left)) max(2rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-right));}
+            [data-testid="stMainBlockContainer"], .stMainBlockContainer, .block-container {padding:max(clamp(4.5rem, 9vh, 5.5rem), calc(env(safe-area-inset-top) + 2rem)) max(1rem, env(safe-area-inset-left)) max(2rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-right))!important;}
             [data-testid="stChatMessage"] {padding:.8rem .9rem;}
             .qh-pathway-card {padding:1rem;}
         }
-    </style>""")
+    </style>""", unsafe_allow_html=True)
 
 
 def render_pathway_card(st, patient_type):

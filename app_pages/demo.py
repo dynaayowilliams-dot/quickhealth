@@ -65,7 +65,50 @@ st.caption("A calm, structured clerking workspace for fictional cases")
 with st.container(border=True):
     st.subheader("Before you begin", icon=":material/verified_user:")
     st.caption("Use fictional cases only. Do not enter real patient information.")
-    fictional_confirmed = st.checkbox("I confirm this case is entirely fictional", key="fictional_case_confirmed")
+fictional_confirmed = st.checkbox("I confirm this case is entirely fictional", key="fictional_case_confirmed")
+
+
+def start_new_fictional_case():
+    st.session_state.session_id = create_session()
+    st.session_state.history = []
+    st.session_state.next_question = "Describe a fictional patient using a made-up age and no identifying details. What is the main concern today?"
+    st.session_state.result = None
+    st.session_state.verification_state = {}
+    st.session_state.pop("demo_limit_reached_for", None)
+
+
+if st.button("Start a new fictional case", type="primary", icon=":material/add:", use_container_width=True, key="start_fictional_case_main"):
+    if fictional_confirmed:
+        start_new_fictional_case()
+        st.rerun()
+if not fictional_confirmed:
+    st.info("Please confirm the case is fictional to begin.")
+
+sessions = list_sessions()
+with st.expander("Open a saved fictional case", icon=":material/folder_open:"):
+    if sessions:
+        saved_ids = [row[0] for row in sessions]
+        session_labels = {row[0]: row[1] for row in sessions}
+        selected_id = st.selectbox(
+            "Choose a saved case",
+            [""] + saved_ids,
+            format_func=lambda value: session_labels.get(value, ""),
+            key="main_saved_case_selection",
+        )
+        if st.button("Open saved case", icon=":material/folder_open:", use_container_width=True, key="open_saved_case_main"):
+            if selected_id:
+                row = get_session(selected_id)
+                st.session_state.session_id = selected_id
+                st.session_state.history = json.loads(row[1])
+                st.session_state.verification_state = get_verification_state(selected_id)
+                st.session_state.next_question = "Continue the fictional history with one question at a time."
+                st.session_state.result = (
+                    {"note": row[2], "summary": row[3], "urgency": row[4], "missing": [], "contradictions": []}
+                    if row[2]
+                    else None
+                )
+                st.rerun()
+            st.warning("Choose a saved fictional case first.")
 
 
 def model_client():
@@ -86,12 +129,7 @@ with st.sidebar:
     st.subheader("Fictional sessions", icon=":material/folder_open:")
     with st.container(border=True):
         if st.button("Start a new fictional case", type="primary", disabled=not fictional_confirmed, icon=":material/add:"):
-            st.session_state.session_id = create_session()
-            st.session_state.history = []
-            st.session_state.next_question = "Describe a fictional patient using a made-up age and no identifying details. What is the main concern today?"
-            st.session_state.result = None
-            st.session_state.verification_state = {}
-            st.session_state.pop("demo_limit_reached_for", None)
+            start_new_fictional_case()
     if sessions:
         with st.container(border=True):
             st.caption(f"Saved fictional cases · {len(sessions)}")
@@ -101,8 +139,9 @@ with st.sidebar:
                 "Choose a saved case",
                 [""] + saved_ids,
                 format_func=lambda value: session_labels.get(value, ""),
+                key="sidebar_saved_case_selection",
             )
-            if selected_id and st.button("Open saved case", icon=":material/folder_open:"):
+            if selected_id and st.button("Open saved case", icon=":material/folder_open:", key="open_saved_case_sidebar"):
                 row = get_session(selected_id)
                 st.session_state.session_id = selected_id
                 st.session_state.history = json.loads(row[1])
