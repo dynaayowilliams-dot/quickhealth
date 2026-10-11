@@ -1,0 +1,18 @@
+In my app Quick Health, the "confirm fictional cases" button/toggle is stuck in the top corner of the screen and I can't tap it. Users can't use the app because of this. Please fix it.
+
+Do the following:
+1. Find the component/screen that renders the "confirm fictional cases" button or toggle.
+2. Figure out why it can't be tapped. Check for: 
+   - It being positioned under the status bar, notch, or safe area
+   - Absolute/fixed positioning pushing it to the corner or off-screen
+   - Another element overlapping it (z-index / elevation / touch-blocking overlay)
+   - A very small touch target
+3. Move it to a clearly visible, easy-to-reach location (for example, a prominent button near the center or bottom of the screen, or a clear row at the top of the content area, below the header).
+4. Respect safe areas (use SafeAreaView / safe-area insets or the equivalent for this framework) so nothing is hidden behind the status bar or notch.
+5. Make the touch target at least 44x44 px, with clear styling, label text, and enough contrast.
+6. Make sure it works on small and large screens, and in both portrait and landscape.
+7. Show me exactly which files you changed and explain what was causing the problem.
+
+---
+
+how do i commit and push
