@@ -1,0 +1,29 @@
+i dont have my landing page, why... did i ask for it already
+
+---
+
+how do i get to see it
+
+---
+
+How do I get both of them to be in sync
+
+---
+
+i did try thr try demo button and it didnt lead to anything
+
+---
+
+Prepare QuickHealth for public deployment on Streamlit Community Cloud without changing safety rules, tests or tracing logic:
+1. Read OPENAI_API_KEY, OPENAI_MODEL, NEATLOGS_API_KEY and QUICKHEALTH_ACCESS_CODE from environment variables first, then fall back to st.secrets, so it works locally with .env and online with Secrets. Never print any value.
+2. Add an access-code gate: if QUICKHEALTH_ACCESS_CODE is set, ask for it before anything else and do not start a case until it is correct.
+3. Add spending protection: a maximum number of model calls per session, a maximum length for each user answer, and a global daily limit on model calls that shows a friendly "demo limit reached" message when hit.
+4. Keep the "fictional cases only" checkbox and the "not medical advice, call emergency services for danger signs" notice always visible. Add: "Do not enter real patient data: sessions are traced."
+5. Make the app start cleanly when the SQLite data folder does not exist, and note in the README that saved sessions may not persist online.
+6. Make sure requirements.txt lists everything needed, and that .env, .venv, data and .streamlit/secrets.toml are in .gitignore.
+7. Add docs/DEPLOY.md with click-by-click steps for Streamlit Community Cloud, listing secret NAMES only.
+Run the tests and report the results. Do not read, print or open .env. Do not commit or push.
+
+---
+
+can you name the cases with letters like A001 and continue instead of the random attributes
