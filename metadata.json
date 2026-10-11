@@ -1,0 +1,31 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4NDT1R53JNE8R3SPVQEN2A2",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 14,
+  "files_touched": [
+    ".streamlit/config.toml",
+    "app.py",
+    "deploy/aws/README.md",
+    "deploy/aws/quickhealth.env.template",
+    "deploy/aws/quickhealth.service",
+    "deploy/aws/setup.sh"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 163198,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 3559168,
+    "output_tokens": 47595,
+    "api_call_count": 65
+  }
+}
