@@ -40,7 +40,7 @@ from quickhealth.storage import (
     get_verification_state,
     list_sessions,
 )
-from quickhealth.ui import apply_app_style, pending_conflict_count, render_pathway_card, render_progress
+from quickhealth.ui import apply_app_style, pending_conflict_count, render_pathway_card, render_progress, render_urgency
 from quickhealth.verification import completeness_check
 from quickhealth.workflow import process_answer
 
@@ -168,16 +168,14 @@ elif lmp_estimate and lmp_estimate["status"] in {"uncertain", "invalid", "future
 if st.session_state.get("result"):
     result = st.session_state.result
     if result.get("emergency"):
+        render_urgency(st, result["urgency"])
         st.error("EMERGENCY — stop the questionnaire and seek emergency care now. Call emergency services or go to the nearest hospital.")
         st.write(result["message"])
-        st.subheader("Urgency from safety rules")
-        st.write(result["urgency"])
         st.stop()
     if result.get("incomplete") or result.get("blocked"):
         st.warning(result.get("message", "Required details remain unresolved; the session is not complete."))
-        st.subheader("Urgency from safety rules")
         if result.get("urgency"):
-            st.write(result["urgency"])
+            render_urgency(st, result["urgency"])
         if result.get("missing"):
             st.subheader("Still missing or unknown")
             st.write(", ".join(result["missing"]))
@@ -193,8 +191,7 @@ if st.session_state.get("result"):
     st.subheader("Plain-language summary", icon=":material/subject:")
     with st.container(border=True):
         st.write(result["summary"])
-    st.subheader("Urgency from safety rules")
-    st.write(result["urgency"])
+    render_urgency(st, result["urgency"])
     if result["missing"]:
         st.caption("Sections that may need more information: " + ", ".join(result["missing"]))
     if result["contradictions"]:

@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#FFFBF7">
+  <meta name="description" content="QuickHealth helps nurses and health workers take clear fictional clerking histories for mothers and children.">
+  <title>QuickHealth — careful history-taking for families</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --cream: #FFFBF7;
+      --green: #0F4C3A;
+      --body: #1F2D2A;
+      --sage: #E4EDE2;
+      --peach: #FADBD0;
+      --coral: #A83222;
+      --butter: #FDEFC7;
+      --amber: #855000;
+      --line: #9AA79F;
+      --white: #FFFFFF;
+      --shadow: 0 18px 55px rgba(15, 76, 58, .10);
+      font-family: ui-rounded, "SF Pro Rounded", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--body);
+      background: var(--cream);
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; min-width: 320px; background: var(--cream); color: var(--body); line-height: 1.6; }
+    a { color: var(--green); text-underline-offset: .2em; }
+    a:focus-visible, button:focus-visible { outline: 3px solid var(--coral); outline-offset: 4px; }
+    .shell { width: min(1120px, calc(100% - 48px)); margin-inline: auto; }
+    .topbar { min-height: 84px; display: flex; align-items: center; justify-content: space-between; gap: 28px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--green); text-decoration: none; font-size: 1.25rem; font-weight: 850; letter-spacing: -.04em; white-space: nowrap; }
+    .brand svg { width: 38px; height: 38px; }
+    .nav { display: flex; align-items: center; gap: clamp(16px, 3vw, 34px); }
+    .nav a { color: var(--body); text-decoration: none; font-weight: 650; font-size: .94rem; }
+    .nav a:hover, .text-link:hover { text-decoration: underline; }
+    .button { display: inline-flex; min-height: 48px; align-items: center; justify-content: center; padding: 11px 22px; border: 2px solid var(--green); border-radius: 999px; background: var(--green); color: var(--white); text-decoration: none; font: inherit; font-weight: 750; line-height: 1.2; transition: transform .18s ease, box-shadow .18s ease; }
+    .button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(15, 76, 58, .17); }
+    .button--outline { color: var(--green); background: transparent; }
+    .nav-cta { min-height: 43px; padding: 9px 19px; font-size: .9rem; }
+    .hero { display: grid; grid-template-columns: 1.05fr .95fr; align-items: center; gap: clamp(32px, 6vw, 80px); padding-block: 72px 94px; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 20px; padding: 7px 13px; border-radius: 999px; background: var(--sage); color: var(--green); font-size: .82rem; font-weight: 800; letter-spacing: .015em; }
+    .eyebrow-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2, h3 { color: var(--green); line-height: 1.12; letter-spacing: -.045em; }
+    h1 { max-width: 680px; margin-bottom: 22px; font-size: clamp(2.75rem, 5.6vw, 4.65rem); font-weight: 900; }
+    .hero-copy { max-width: 610px; margin-bottom: 29px; font-size: clamp(1.05rem, 1.5vw, 1.19rem); line-height: 1.72; }
+    .button-row { display: flex; flex-wrap: wrap; gap: 12px; }
+    .art { position: relative; min-height: 430px; display: grid; place-items: center; isolation: isolate; }
+    .shape { position: absolute; border-radius: 48% 52% 58% 42% / 50% 43% 57% 50%; }
+    .shape--back { width: 88%; height: 84%; background: var(--sage); transform: rotate(-8deg); }
+    .shape--peach { width: 67%; height: 71%; right: 0; top: 1%; background: var(--peach); transform: rotate(13deg); }
+    .shape--cream { width: 57%; height: 59%; left: 0; bottom: 3%; background: #F3E8D9; transform: rotate(-11deg); }
+    .art-card { position: relative; z-index: 1; width: min(76%, 360px); padding: 35px; border: 1px solid rgba(15, 76, 58, .12); border-radius: 36px; background: var(--cream); box-shadow: var(--shadow); text-align: center; }
+    .art-card svg { width: 155px; height: 155px; margin: 0 auto 15px; }
+    .art-card p { margin: 0; color: var(--green); font-size: 1rem; font-weight: 800; }
+    .art-caption { position: absolute; z-index: 2; right: 0; bottom: 17px; padding: 10px 15px; border-radius: 999px; background: var(--cream); color: var(--green); font-size: .82rem; font-weight: 750; box-shadow: var(--shadow); }
+    .section { padding-block: 76px; }
+    .section-heading { max-width: 690px; margin: 0 auto 38px; text-align: center; }
+    .section-heading h2 { margin-bottom: 12px; font-size: clamp(2rem, 3.5vw, 3rem); }
+    .section-heading p { margin-bottom: 0; }
+    .pathways { background: #F7F2EB; }
+    .card-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+    .path-card { display: flex; min-height: 300px; flex-direction: column; align-items: flex-start; padding: clamp(25px, 4vw, 42px); border-radius: 30px; }
+    .path-card--mother { background: var(--peach); }
+    .path-card--child { background: var(--butter); }
+    .path-card .icon { width: 54px; height: 54px; display: grid; place-items: center; margin-bottom: 24px; border-radius: 50%; background: var(--cream); }
+    .icon svg { width: 28px; height: 28px; }
+    .path-card h3 { margin-bottom: 13px; color: var(--green); font-size: clamp(1.4rem, 2.2vw, 1.8rem); }
+    .path-card p { margin-bottom: 26px; }
+    .path-card .button { min-height: 44px; margin-top: auto; padding: 9px 18px; background: transparent; font-size: .92rem; }
+    .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 23px; text-align: center; }
+    .step { padding: 15px 16px 8px; }
+    .step .icon { width: 66px; height: 66px; display: grid; place-items: center; margin: 0 auto 20px; border-radius: 50%; background: var(--sage); }
+    .step .icon svg { width: 30px; height: 30px; }
+    .step h3 { margin-bottom: 10px; font-size: 1.28rem; }
+    .step p { margin-bottom: 0; }
+    .safety-wrap { padding-block: 20px 84px; }
+    .safety { padding: clamp(28px, 5vw, 54px); border-radius: 34px; background: var(--sage); }
+    .safety h2 { margin-bottom: 25px; font-size: clamp(2rem, 3.4vw, 2.7rem); }
+    .safety-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px 32px; padding: 0; list-style: none; }
+    .safety-grid li { position: relative; padding-left: 30px; }
+    .safety-grid li::before { position: absolute; left: 0; top: .1em; color: var(--green); content: "✓"; font-weight: 900; }
+    .safety-alert { margin: 25px 0 0; padding: 17px 20px; border-left: 5px solid var(--coral); border-radius: 12px; background: var(--cream); color: var(--body); font-weight: 700; }
+    footer { padding-block: 30px; border-top: 1px solid #D8DED8; }
+    .footer-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 28px; }
+    footer p { margin: 0; font-size: .91rem; }
+    .footer-note { width: 100%; color: var(--body); font-size: .86rem !important; }
+    @media (max-width: 800px) {
+      .shell { width: min(100% - 36px, 640px); }
+      .topbar { min-height: 75px; flex-wrap: wrap; padding-block: 13px; }
+      .nav { order: 3; width: 100%; justify-content: space-between; gap: 12px; overflow-x: auto; }
+      .nav a { white-space: nowrap; font-size: .88rem; }
+      .nav-cta { margin-left: auto; }
+      .hero { grid-template-columns: 1fr; gap: 12px; padding-block: 58px 65px; }
+      .art { min-height: 360px; }
+      .art-card { width: min(70%, 320px); }
+      .section { padding-block: 60px; }
+    }
+    @media (max-width: 580px) {
+      .shell { width: min(100% - 30px, 460px); }
+      .topbar { gap: 12px; }
+      .brand { font-size: 1.12rem; }
+      .brand svg { width: 33px; height: 33px; }
+      .nav { padding-block: 5px 2px; }
+      .nav a { font-size: .81rem; }
+      .nav-cta { min-height: 40px; padding: 8px 14px; font-size: .83rem; }
+      h1 { font-size: clamp(2.55rem, 12vw, 3.5rem); }
+      .art { min-height: 310px; }
+      .art-card { width: 68%; padding: 24px; border-radius: 28px; }
+      .art-card svg { width: 120px; height: 120px; }
+      .card-grid, .steps, .safety-grid { grid-template-columns: 1fr; }
+      .path-card { min-height: 0; }
+      .steps { gap: 28px; }
+      .step { padding-inline: 5px; }
+      .safety-wrap { padding-bottom: 60px; }
+      .footer-inner { align-items: flex-start; flex-direction: column; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="shell">
+    <nav class="topbar" aria-label="Main navigation">
+      <a class="brand" href="#home" aria-label="QuickHealth home">
+        <svg viewBox="0 0 48 48" role="img" aria-label="QuickHealth heart and leaf logo" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 40S5 29 5 16.8C5 7.2 17.2 4.5 24 14c6.8-9.5 19-6.8 19 2.8C43 29 24 40 24 40Z" fill="none" stroke="#0F4C3A" stroke-width="3.5" stroke-linejoin="round"/>
+          <path d="M20 27c.2-7.2 5.6-12 13-12-1 7.8-5.7 12.1-13 12Z" fill="#0F4C3A"/>
+          <path d="M15 32c2.2-3.4 5.4-6.1 9.5-8.4" fill="none" stroke="#0F4C3A" stroke-width="2.4" stroke-linecap="round"/>
+        </svg>
+        <span>QuickHealth</span>
+      </a>
+      <div class="nav">
+        <a href="#home">Home</a>
+        <a href="#mothers">For Mothers</a>
+        <a href="#children">For Children</a>
+        <a href="#about">About</a>
+      </div>
+      <a class="button nav-cta" href="#">Try the demo</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero shell" id="home" aria-labelledby="hero-title">
+      <div>
+        <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span>Built for neatHack 2026</p>
+        <h1 id="hero-title">Faster, safer history-taking for mothers and children.</h1>
+        <p class="hero-copy">QuickHealth helps nurses and health workers take a clear clerking history, spot danger signs early, and produce a clinician-ready note.</p>
+        <div class="button-row">
+          <a class="button" href="#">Try the demo</a>
+          <a class="button button--outline" href="#how">See how it works</a>
+        </div>
+      </div>
+      <div class="art" aria-label="A calm illustration in cream, peach and sage">
+        <div class="shape shape--back" aria-hidden="true"></div>
+        <div class="shape shape--peach" aria-hidden="true"></div>
+        <div class="shape shape--cream" aria-hidden="true"></div>
+        <div class="art-card">
+          <svg viewBox="0 0 180 180" role="img" aria-label="Heart and leaf illustration" xmlns="http://www.w3.org/2000/svg">
+            <path d="M90 151S27 113 27 70c0-29 37-40 63-7 26-33 63-22 63 7 0 43-63 81-63 81Z" fill="#FADBD0" stroke="#0F4C3A" stroke-width="5" stroke-linejoin="round"/>
+            <path d="M76 99c1-26 20-43 48-43-3 28-21 44-48 43Z" fill="#0F4C3A"/>
+            <path d="M58 116c11-15 26-27 47-38" fill="none" stroke="#0F4C3A" stroke-width="5" stroke-linecap="round"/>
+          </svg>
+          <p>Clear questions. Careful notes.</p>
+        </div>
+        <span class="art-caption">Made for health workers</span>
+        <!-- Owner photo placeholder: add a photo here only if you have the rights to use it. -->
+      </div>
+    </section>
+
+    <section class="pathways section" aria-labelledby="pathway-title">
+      <div class="shell">
+        <div class="section-heading">
+          <h2 id="pathway-title">Support for every stage</h2>
+          <p>Focused pathways help gather the details that matter for a clear clinical history.</p>
+        </div>
+        <div class="card-grid">
+          <article class="path-card path-card--mother" id="mothers">
+            <span class="icon">
+              <svg viewBox="0 0 32 32" role="img" aria-label="Pregnancy and postnatal pathway icon" xmlns="http://www.w3.org/2000/svg"><path d="M16 27s-9-5.6-9-12.5C7 9.8 12.5 8 16 13c3.5-5 9-3.2 9 1.5C25 21.4 16 27 16 27Z" fill="none" stroke="#0F4C3A" stroke-width="2.3"/><path d="M14 18c.2-3.6 2.7-5.8 6.5-5.8-.5 3.8-2.8 5.8-6.5 5.8Z" fill="#0F4C3A"/></svg>
+            </span>
+            <h3>Pregnancy and postnatal pathway</h3>
+            <p>Asks about gestational age, antenatal care, and danger signs such as severe headache with visual changes, bleeding and reduced fetal movement.</p>
+            <a class="button" href="#how">Explore the pathway</a>
+          </article>
+          <article class="path-card path-card--child" id="children">
+            <span class="icon">
+              <svg viewBox="0 0 32 32" role="img" aria-label="Child health pathway icon" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="11" r="5" fill="none" stroke="#0F4C3A" stroke-width="2.3"/><path d="M6.5 27c.7-6.1 4-9.1 9.5-9.1s8.8 3 9.5 9.1" fill="none" stroke="#0F4C3A" stroke-width="2.3" stroke-linecap="round"/><path d="M11 12h.1M21 12h.1" stroke="#0F4C3A" stroke-width="2.5" stroke-linecap="round"/></svg>
+            </span>
+            <h3>Child health pathway</h3>
+            <p>History taken from the caregiver, including feeding, immunisation and danger signs in infants and children under five.</p>
+            <a class="button" href="#how">Explore the pathway</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section shell" id="how" aria-labelledby="how-title">
+      <div class="section-heading">
+        <h2 id="how-title">How it works</h2>
+        <p>A guided flow keeps the history focused and makes the next steps clear.</p>
+      </div>
+      <div class="steps">
+        <article class="step">
+          <span class="icon"><svg viewBox="0 0 32 32" role="img" aria-label="History questions icon" xmlns="http://www.w3.org/2000/svg"><path d="M7 7.5h18v14H15l-6 4v-4H7v-14Z" fill="none" stroke="#0F4C3A" stroke-width="2.2" stroke-linejoin="round"/><path d="M11 12h10M11 17h7" stroke="#0F4C3A" stroke-width="2.2" stroke-linecap="round"/></svg></span>
+          <h3>Take the history</h3>
+          <p>Adaptive questions, one at a time.</p>
+        </article>
+        <article class="step">
+          <span class="icon"><svg viewBox="0 0 32 32" role="img" aria-label="Rules check icon" xmlns="http://www.w3.org/2000/svg"><path d="M16 4 27 8v7c0 7-4.5 11-11 14C9.5 26 5 22 5 15V8l11-4Z" fill="none" stroke="#0F4C3A" stroke-width="2.2" stroke-linejoin="round"/><path d="m10.5 16 3.5 3.5 7.5-8" fill="none" stroke="#0F4C3A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <h3>Check for danger signs</h3>
+          <p>A rules file, not the AI, decides urgency.</p>
+        </article>
+        <article class="step">
+          <span class="icon"><svg viewBox="0 0 32 32" role="img" aria-label="Structured note icon" xmlns="http://www.w3.org/2000/svg"><path d="M9 4.5h10l5 5V27H9V4.5Z" fill="none" stroke="#0F4C3A" stroke-width="2.2" stroke-linejoin="round"/><path d="M19 4.5v5h5M12.5 15h8M12.5 19.5h8M12.5 24h5" stroke="#0F4C3A" stroke-width="2.2" stroke-linecap="round"/></svg></span>
+          <h3>Get a clear note</h3>
+          <p>A structured clerking note and a plain-language summary for the clinician to review.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="safety-wrap shell" id="about" aria-labelledby="safety-title">
+      <div class="safety">
+        <h2 id="safety-title">Built to be careful</h2>
+        <ul class="safety-grid">
+          <li>QuickHealth never diagnoses.</li>
+          <li>Urgency is decided by a rules file.</li>
+          <li>Completeness and contradiction checks run before a note is finished.</li>
+          <li>This prototype uses fictional cases only.</li>
+          <li>The rules have not yet been reviewed by a clinician.</li>
+          <li>QuickHealth is not medical advice.</li>
+        </ul>
+        <p class="safety-alert">If someone has danger signs, call emergency services.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-inner">
+      <p>Built for neatHack 2026 with Codex, Entire, neatlogs and cfo.ai</p>
+      <p><a href="https://github.com/dynaayowilliams-dot/quickhealth">View the QuickHealth project on GitHub</a></p>
+      <p class="footer-note">QuickHealth is not medical advice. If someone has danger signs, call emergency services.</p>
+    </div>
+  </footer>
+</body>
+</html>

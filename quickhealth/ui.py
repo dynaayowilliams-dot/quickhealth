@@ -66,82 +66,55 @@ def pending_conflict_count(verification_state):
     return sum(1 for record in records if isinstance(record, dict) and record.get("status") == "pending")
 
 
+def render_urgency(st, urgency):
+    """Show rule-produced urgency with a text label, icon, and distinct colour."""
+    urgency_styles = {
+        "EMERGENCY_NOW": ("qh-urgency--emergency", "⚠", "EMERGENCY"),
+        "SEE_CLINICIAN_TODAY": ("qh-urgency--today", "●", "SEE A CLINICIAN TODAY"),
+        "ROUTINE": ("qh-urgency--routine", "✓", "ROUTINE"),
+    }
+    css_class, icon, label = urgency_styles.get(
+        urgency, ("qh-urgency--unknown", "ℹ", "URGENCY STATUS")
+    )
+    safe_urgency = html.escape(str(urgency or "Not available"))
+    st.markdown(
+        f'<div class="qh-urgency {css_class}" role="status">'
+        f'<span class="qh-urgency-icon" aria-hidden="true">{icon}</span>'
+        f'<strong>{label}</strong><span>{safe_urgency}</span></div>',
+        unsafe_allow_html=True,
+    )
+
+
 def apply_app_style(st):
-    """Add restrained responsive polish on top of Streamlit's theme tokens."""
+    """Apply the QuickHealth light theme and shared component styling."""
     st.html("""<style>
-        :root {
-            color-scheme: light;
-            --qh-bg: #FFFBF7;
-            --qh-surface: #E4EDE2;
-            --qh-primary: #0F4C3A;
-            --qh-text: #1F2D2A;
-            --qh-border: #71827B;
-        }
-        html, body, [data-testid="stApp"], [data-testid="stAppViewContainer"] {
-            color: var(--qh-text) !important;
-            background: var(--qh-bg) !important;
-        }
-        [data-testid="stHeader"], [data-testid="stToolbar"],
-        [data-testid="stDecoration"], [data-testid="stStatusWidget"] {
-            color: var(--qh-text) !important;
-            background: var(--qh-bg) !important;
-        }
-        [data-testid="stSidebar"], [data-testid="stSidebar"] > div {
-            color: var(--qh-text) !important;
-            background: var(--qh-surface) !important;
-            border-right: 1px solid var(--qh-border);
-        }
-        [data-testid="stMarkdownContainer"], [data-testid="stCaptionContainer"],
-        [data-testid="stWidgetLabel"], [data-testid="stMarkdownContainer"] p,
-        [data-testid="stMarkdownContainer"] li, label, small {
-            color: var(--qh-text) !important;
-        }
-        .block-container {max-width: 1120px; padding-top: 1.6rem; padding-bottom: 3rem;}
-        [data-testid="stVerticalBlockBorderWrapper"] {border-radius: 18px;}
-        [data-testid="stChatMessage"] {
-            color: var(--qh-text) !important;
-            border: 1px solid var(--qh-border); border-radius: 18px;
-            padding: 0.85rem 1rem; background: var(--qh-surface) !important;
-        }
-        [data-testid="stChatInput"], [data-testid="stChatInput"] > div,
-        [data-testid="stChatInput"] textarea,
-        [data-testid="stTextInput"] input, [data-testid="stSelectbox"] [role="combobox"] {
-            color: var(--qh-text) !important;
-            background: var(--qh-bg) !important;
-            border-color: var(--qh-border) !important;
-        }
-        [data-testid="stChatInput"] {border-radius: 16px;}
-        [data-testid="stChatInput"] textarea {line-height: 1.55;}
-        [data-testid="stChatInput"] textarea::placeholder,
-        input::placeholder, textarea::placeholder {color: #485852 !important; opacity: 1;}
-        button[kind="primary"] {
-            color: #FFFFFF !important; background: var(--qh-primary) !important;
-            border-color: var(--qh-primary) !important; border-radius: 12px; font-weight: 650;
-        }
-        [data-testid="stAlert"] {
-            color: var(--qh-text) !important;
-            background: var(--qh-surface) !important;
-            border: 1px solid var(--qh-border) !important;
-        }
-        [data-testid="stAlert"] * {color: var(--qh-text) !important;}
-        [data-testid="stProgress"] [role="progressbar"] {background: #71827B !important;}
-        [data-testid="stProgress"] [role="progressbar"] > div {
-            background: var(--qh-primary) !important;
-        }
-        [data-testid="stProgress"] p {color: var(--qh-text) !important;}
-        .qh-pathway-card {
-            border: 1px solid var(--qh-border); border-left: 5px solid var(--qh-primary);
-            border-radius: 18px; padding: 1rem 1.2rem; margin: 0.35rem 0 1rem;
-            color: var(--qh-text); background: var(--qh-surface);
-        }
-        .qh-pathway-card p {margin: 0; line-height: 1.55; color: var(--qh-text);}
-        .qh-pathway-card--pregnancy, .qh-pathway-card--postpartum,
-        .qh-pathway-card--child, .qh-pathway-card--general,
-        .qh-pathway-card--unknown {background: var(--qh-surface); border-color: var(--qh-border);}
+        :root {color-scheme: light; --qh-bg:#FFFBF7; --qh-surface:#E4EDE2; --qh-green:#0F4C3A; --qh-text:#1F2D2A; --qh-border:#87958D;}
+        html, body, [data-testid="stApp"], [data-testid="stAppViewContainer"] {color:var(--qh-text)!important; background:var(--qh-bg)!important;}
+        [data-testid="stHeader"], [data-testid="stToolbar"], [data-testid="stDecoration"] {background:var(--qh-bg)!important; color:var(--qh-text)!important;}
+        [data-testid="stSidebar"], [data-testid="stSidebar"]>div {background:var(--qh-surface)!important; color:var(--qh-text)!important;}
+        [data-testid="stMarkdownContainer"], [data-testid="stCaptionContainer"], [data-testid="stWidgetLabel"], label, small {color:var(--qh-text)!important;}
+        .block-container {max-width:1120px; padding:2rem 1.5rem 3rem;}
+        [data-testid="stVerticalBlockBorderWrapper"] {border:1px solid #CFD9D0; border-radius:22px; background:var(--qh-bg);}
+        [data-testid="stChatMessage"] {color:var(--qh-text)!important; border:1px solid #CFD9D0; border-radius:22px; padding:1rem 1.15rem; background:var(--qh-surface)!important;}
+        [data-testid="stChatInput"], [data-testid="stChatInput"]>div, [data-testid="stChatInput"] textarea, [data-testid="stTextInput"] input, [data-testid="stSelectbox"] [role="combobox"] {color:var(--qh-text)!important; background:var(--qh-bg)!important; border-color:var(--qh-border)!important; border-radius:14px;}
+        input::placeholder, textarea::placeholder {color:#485852!important; opacity:1;}
+        button[kind="primary"] {color:#fff!important; background:var(--qh-green)!important; border-color:var(--qh-green)!important; border-radius:999px; font-weight:700;}
+        [data-testid="stAlert"] {color:var(--qh-text)!important; background:var(--qh-surface)!important; border:1px solid var(--qh-border)!important; border-radius:16px;}
+        [data-testid="stAlert"] * {color:var(--qh-text)!important;}
+        [data-testid="stProgress"] [role="progressbar"] {background:#87958D!important;}
+        [data-testid="stProgress"] [role="progressbar"]>div {background:var(--qh-green)!important;}
+        .qh-pathway-card {border:1px solid #87958D; border-left:5px solid var(--qh-green); border-radius:22px; padding:1.2rem 1.4rem; margin:.4rem 0 1rem; color:var(--qh-text); background:var(--qh-surface);}
+        .qh-pathway-card p {margin:0; line-height:1.6; color:var(--qh-text);}
+        .qh-urgency {display:flex; flex-wrap:wrap; align-items:center; gap:.55rem; margin:.5rem 0 1rem; padding:1rem 1.15rem; border:2px solid; border-radius:18px; font-size:1rem;}
+        .qh-urgency-icon {font-size:1.25rem; line-height:1;}
+        .qh-urgency--emergency {color:#7F1D1D; background:#FDE8E7; border-color:#A83232;}
+        .qh-urgency--today {color:#704000; background:#FFF1D1; border-color:#9A5B00;}
+        .qh-urgency--routine {color:#124E48; background:#E2F2F0; border-color:#24756C;}
+        .qh-urgency--unknown {color:var(--qh-text); background:var(--qh-surface); border-color:var(--qh-border);}
         @media (max-width: 640px) {
-            .block-container {padding: 1rem 0.85rem 2rem;}
-            [data-testid="stChatMessage"] {padding: 0.7rem 0.8rem;}
-            .qh-pathway-card {padding: 0.9rem 1rem;}
+            .block-container {padding:1.2rem 1rem 2rem;}
+            [data-testid="stChatMessage"] {padding:.8rem .9rem;}
+            .qh-pathway-card {padding:1rem;}
         }
     </style>""")
 
