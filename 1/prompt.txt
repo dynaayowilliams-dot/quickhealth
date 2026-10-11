@@ -1,0 +1,11 @@
+Make only these two changes to the Streamlit Home page, and change nothing else on it or anywhere else.
+
+1. ICONS: The icon circles on the Streamlit Home page are empty. Put the same icons inside them that landing/index.html shows: the heart in the pregnancy card, the person in the child card, and the chat bubble, shield with tick and document in the three "How it works" circles. Find out why they are blank (I suspect Streamlit strips inline SVG) and fix it. Preferred approach: embed the finished landing page with st.components.v1.html, with links that open using target="_top". Otherwise use Streamlit Material icons, Unicode symbols or CSS data-URI images. Tell me which you chose and why, and make sure it works on a phone.
+
+2. TRY THE DEMO BUTTONS: Make every "Try the demo" button on the Streamlit Home page (nav, hero and any repeat) much larger: minimum height 56px, font size about 1.2rem, bold label, generous horizontal padding, dark green #0F4C3A background with white text, full width on phones, visible focus outline. Make the hero button the largest. Each one must still open the Demo page in one click, also after scrolling.
+
+Do not touch any other text, colour, spacing, layout, page or file, including landing/index.html, the credit and partner lines, the Demo page, safety_rules.py, the rules file, the tests, tracing, the access-code gate or any logic. If something cannot be matched exactly, tell me plainly. Run the tests and report the results. Do not read, print or open .env. Do not commit or push.
+
+---
+
+how to check if it worked
