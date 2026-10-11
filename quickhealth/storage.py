@@ -4,7 +4,7 @@ import json
 import os
 import sqlite3
 import time
-import uuid
+from datetime import datetime, timezone
 from pathlib import Path
 from contextlib import contextmanager
 
@@ -25,10 +25,54 @@ def _connect():
             ("input_tokens", "INTEGER NOT NULL DEFAULT 0"),
             ("output_tokens", "INTEGER NOT NULL DEFAULT 0"),
             ("model_latency_ms", "REAL NOT NULL DEFAULT 0"),
+            ("model_calls", "INTEGER NOT NULL DEFAULT 0"),
+            ("case_label", "TEXT"),
         ):
             if name not in columns:
                 connection.execute(f"ALTER TABLE sessions ADD COLUMN {name} {definition}")
+        connection.execute(
+            "CREATE TABLE IF NOT EXISTS daily_model_calls "
+            "(utc_date TEXT PRIMARY KEY, calls INTEGER NOT NULL DEFAULT 0)"
+        )
+        connection.execute(
+            "CREATE TABLE IF NOT EXISTS session_id_sequence "
+            "(singleton INTEGER PRIMARY KEY CHECK(singleton = 1), next_number INTEGER NOT NULL)"
+        )
+        connection.execute(
+            "INSERT OR IGNORE INTO session_id_sequence (singleton, next_number) VALUES (1, 1)"
+        )
         connection.commit()
+        unlabelled = connection.execute(
+            "SELECT 1 FROM sessions WHERE case_label IS NULL OR case_label = '' LIMIT 1"
+        ).fetchone()
+        if unlabelled:
+            connection.execute("BEGIN IMMEDIATE")
+            rows = connection.execute(
+                "SELECT id FROM sessions WHERE case_label IS NULL OR case_label = '' "
+                "ORDER BY created_at, id"
+            ).fetchall()
+            sequence = connection.execute(
+                "SELECT next_number FROM session_id_sequence WHERE singleton = 1"
+            ).fetchone()[0]
+            labels = connection.execute(
+                "SELECT case_label FROM sessions WHERE case_label GLOB 'A[0-9]*'"
+            ).fetchall()
+            latest_label = max(
+                (int(label[0][1:]) for label in labels if label[0][1:].isdigit()),
+                default=0,
+            )
+            sequence = max(sequence, latest_label + 1)
+            for (session_id,) in rows:
+                connection.execute(
+                    "UPDATE sessions SET case_label = ? WHERE id = ?",
+                    (f"A{sequence:03d}", session_id),
+                )
+                sequence += 1
+            connection.execute(
+                "UPDATE session_id_sequence SET next_number = ? WHERE singleton = 1",
+                (sequence,),
+            )
+            connection.commit()
         yield connection
         connection.commit()
     except Exception:
@@ -36,6 +80,36 @@ def _connect():
         raise
     finally:
         connection.close()
+
+
+def reserve_model_call(session_id, per_session_limit, daily_limit):
+    """Atomically reserve one model call; return its limit reason or None."""
+    today = datetime.now(timezone.utc).date().isoformat()
+    with _connect() as connection:
+        connection.execute("BEGIN IMMEDIATE")
+        session = connection.execute(
+            "SELECT model_calls FROM sessions WHERE id = ?", (session_id,)
+        ).fetchone()
+        # Some unit-level workflow callers use synthetic IDs without creating a
+        # stored session. Do not apply production quotas to those test doubles.
+        if session is None:
+            return None
+        daily = connection.execute(
+            "SELECT calls FROM daily_model_calls WHERE utc_date = ?", (today,)
+        ).fetchone()
+        if session[0] >= per_session_limit:
+            return "session"
+        if daily and daily[0] >= daily_limit:
+            return "daily"
+        connection.execute(
+            "UPDATE sessions SET model_calls = model_calls + 1 WHERE id = ?", (session_id,)
+        )
+        connection.execute(
+            "INSERT INTO daily_model_calls (utc_date, calls) VALUES (?, 1) "
+            "ON CONFLICT(utc_date) DO UPDATE SET calls = calls + 1",
+            (today,),
+        )
+    return None
 
 
 @neatlogs.span(kind="TOOL", name="sqlite_write_recovery", capture_input=False, capture_output=False)
@@ -96,12 +170,31 @@ def completed_usage_totals():
 
 @neatlogs.span(kind="TOOL", name="sqlite_state_store_create", capture_input=False, capture_output=False)
 def create_session():
-    session_id = str(uuid.uuid4())[:8]
     def write():
         with _connect() as connection:
-            connection.execute("INSERT INTO sessions (id) VALUES (?)", (session_id,))
-    _retry_sqlite_write("create_session", write)
-    return session_id
+            connection.execute("BEGIN IMMEDIATE")
+            sequence = connection.execute(
+                "SELECT next_number FROM session_id_sequence WHERE singleton = 1"
+            ).fetchone()[0]
+            labels = connection.execute(
+                "SELECT case_label FROM sessions WHERE case_label GLOB 'A[0-9]*'"
+            ).fetchall()
+            latest_label = max(
+                (int(label[0][1:]) for label in labels if label[0][1:].isdigit()),
+                default=0,
+            )
+            sequence = max(sequence, latest_label + 1)
+            case_label = f"A{sequence:03d}"
+            connection.execute(
+                "UPDATE session_id_sequence SET next_number = ? WHERE singleton = 1",
+                (sequence + 1,),
+            )
+            connection.execute(
+                "INSERT INTO sessions (id, case_label) VALUES (?, ?)",
+                (case_label, case_label),
+            )
+            return case_label
+    return _retry_sqlite_write("create_session", write)
 
 
 @neatlogs.span(kind="TOOL", name="sqlite_state_store_get", capture_input=False, capture_output=False)
@@ -114,7 +207,9 @@ def get_session(session_id):
 @neatlogs.span(kind="TOOL", name="sqlite_state_store_list", capture_input=False, capture_output=False)
 def list_sessions():
     with _connect() as connection:
-        return connection.execute("SELECT id FROM sessions ORDER BY created_at DESC").fetchall()
+        return connection.execute(
+            "SELECT id, case_label FROM sessions ORDER BY created_at DESC, id DESC"
+        ).fetchall()
 
 
 @neatlogs.span(kind="TOOL", name="sqlite_state_store_clear_fictional_sessions", capture_input=False, capture_output=False)

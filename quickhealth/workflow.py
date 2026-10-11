@@ -6,7 +6,8 @@ import time
 from quickhealth.clerking import ask_next_question, build_clerking_note
 from quickhealth.pathways import select_pathway
 from quickhealth.safety_rules import assess_urgency
-from quickhealth.storage import record_model_usage, save_answer, save_result, save_verification_state
+from quickhealth.limits import MAX_MODEL_CALLS_PER_DAY, MAX_MODEL_CALLS_PER_SESSION
+from quickhealth.storage import record_model_usage, reserve_model_call, save_answer, save_result, save_verification_state
 from quickhealth.verification import (
     CandidateDetectionError,
     completeness_check,
@@ -16,6 +17,10 @@ from quickhealth.verification import (
     contradiction_clarification_question,
     detect_free_text_candidates,
 )
+
+
+class DemoLimitReached(Exception):
+    """Raised before a model request when a demo call allowance is exhausted."""
 
 
 class _UsageRecordingClient:
@@ -36,6 +41,13 @@ class _UsageRecordingClient:
             self._session_id = session_id
 
         def create(self, **kwargs):
+            limit_reason = reserve_model_call(
+                self._session_id,
+                MAX_MODEL_CALLS_PER_SESSION,
+                MAX_MODEL_CALLS_PER_DAY,
+            )
+            if limit_reason:
+                raise DemoLimitReached(limit_reason)
             started = time.perf_counter()
             response = self._completions.create(**kwargs)
             elapsed_ms = (time.perf_counter() - started) * 1000

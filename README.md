@@ -24,7 +24,7 @@ if (-not (Test-Path .env)) { Copy-Item .env.example .env }
 notepad .env
 ```
 
-Set `OPENAI_API_KEY`, `OPENAI_MODEL`, and `NEATLOGS_API_KEY` in that private file. Do not paste or commit those values. `.env` is listed in `.gitignore`; `.env.example` has placeholders only.
+Set `OPENAI_API_KEY`, `OPENAI_MODEL`, and `NEATLOGS_API_KEY` in that private file. `QUICKHEALTH_ACCESS_CODE` is optional locally and enables the access-code gate when set. Do not paste or commit those values. `.env` is listed in `.gitignore`; `.env.example` has placeholders only.
 
 Start QuickHealth:
 
@@ -42,7 +42,9 @@ Run the automated tests and scripted evaluation:
 .\.venv\Scripts\python.exe cost_report.py
 ```
 
-The SQLite database is stored locally at `data\quickhealth.sqlite3`; the `data` folder is ignored by Git. Do not put real patient data in it.
+The SQLite database is stored locally at `data\quickhealth.sqlite3`; the `data` folder is ignored by Git and is created automatically when needed. Streamlit Community Cloud uses an ephemeral filesystem, so saved sessions may not persist online or survive app restarts. The daily demo-call counter is also stored in this SQLite database and can reset when the cloud app restarts. The app caps each fictional session at 12 model calls, the shared daily allowance at 100 calls, and each answer at 2,000 characters. Do not put real patient data in it.
+
+For Streamlit Community Cloud deployment, follow [docs/DEPLOY.md](docs/DEPLOY.md).
 
 ## Architecture
 

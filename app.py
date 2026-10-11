@@ -8,8 +8,29 @@ import secrets
 import streamlit as st
 from dotenv import dotenv_values
 
+# Resolve process environment first, then Streamlit Cloud secrets, then the
+# local .env fallback. Values are used in memory and are never displayed.
+DOTENV_CONFIG = dotenv_values(Path(__file__).parent / ".env")
+
+
+def configured_value(name):
+    value = os.environ.get(name)
+    if value:
+        return value
+    try:
+        value = st.secrets.get(name)
+    except Exception:
+        value = None
+    if value:
+        return str(value)
+    return DOTENV_CONFIG.get(name)
+
+
+CONFIG = {
+    name: configured_value(name)
+    for name in ("OPENAI_API_KEY", "OPENAI_MODEL", "NEATLOGS_API_KEY", "QUICKHEALTH_ACCESS_CODE")
+}
 # Initialize tracing before importing OpenAI so neatlogs can instrument it.
-CONFIG = dotenv_values(Path(__file__).parent / ".env")
 # The clerking helpers use the model name from this .env-derived value.
 os.environ["OPENAI_MODEL"] = CONFIG.get("OPENAI_MODEL") or ""
 import neatlogs
@@ -32,6 +53,7 @@ configure_tracing()
 from openai import OpenAI
 
 from quickhealth.obstetric_dates import LMP_ESTIMATE_NOTICE, find_lmp_estimate
+from quickhealth.limits import MAX_ANSWER_LENGTH
 from quickhealth.pathways import select_pathway
 from quickhealth.storage import (
     create_session,
@@ -42,22 +64,27 @@ from quickhealth.storage import (
 )
 from quickhealth.ui import apply_app_style, pending_conflict_count, render_pathway_card, render_progress, render_urgency
 from quickhealth.verification import completeness_check
-from quickhealth.workflow import process_answer
+from quickhealth.workflow import DemoLimitReached, process_answer
 
 
 st.set_page_config(page_title="QuickHealth", page_icon=":material/health_and_safety:", layout="wide")
 apply_app_style(st)
-st.title("QuickHealth", icon=":material/health_and_safety:")
-st.caption("A calm, structured clerking workspace for fictional cases")
 with st.container(border=True):
     st.error(
         "Fictional cases only. Not medical advice. Call emergency services for danger signs. "
         "This tool does not diagnose.",
         icon=":material/emergency:",
     )
-    st.info("Do not enter real patient names, contact details, or any real patient information.", icon=":material/lock:")
+    st.info(
+        "Do not enter real patient data: sessions are traced. Do not enter real names or contact details.",
+        icon=":material/lock:",
+    )
 
-access_code_required = os.environ.get("QUICKHEALTH_ACCESS_CODE") or CONFIG.get("QUICKHEALTH_ACCESS_CODE")
+with st.sidebar:
+    st.subheader("Fictional sessions", icon=":material/folder_open:")
+    fictional_confirmed = st.checkbox("I confirm this case is entirely fictional")
+
+access_code_required = CONFIG.get("QUICKHEALTH_ACCESS_CODE")
 if access_code_required and not st.session_state.get("quickhealth_access_granted", False):
     st.subheader("Access code required")
     with st.form("quickhealth_access_gate"):
@@ -70,6 +97,9 @@ if access_code_required and not st.session_state.get("quickhealth_access_granted
         else:
             st.error("That access code did not match.")
     st.stop()
+
+st.title("QuickHealth", icon=":material/health_and_safety:")
+st.caption("A calm, structured clerking workspace for fictional cases")
 
 
 def model_client():
@@ -85,20 +115,24 @@ def model_client():
 
 sessions = list_sessions()
 with st.sidebar:
-    st.subheader("Fictional sessions", icon=":material/folder_open:")
     with st.container(border=True):
-        fictional_confirmed = st.checkbox("I confirm this case is entirely fictional")
         if st.button("Start a new fictional case", type="primary", disabled=not fictional_confirmed, icon=":material/add:"):
             st.session_state.session_id = create_session()
             st.session_state.history = []
             st.session_state.next_question = "Describe a fictional patient using a made-up age and no identifying details. What is the main concern today?"
             st.session_state.result = None
             st.session_state.verification_state = {}
+            st.session_state.pop("demo_limit_reached_for", None)
     if sessions:
         with st.container(border=True):
             st.caption(f"Saved fictional cases · {len(sessions)}")
             saved_ids = [row[0] for row in sessions]
-            selected_id = st.selectbox("Choose a saved case", [""] + saved_ids)
+            session_labels = {row[0]: row[1] for row in sessions}
+            selected_id = st.selectbox(
+                "Choose a saved case",
+                [""] + saved_ids,
+                format_func=lambda value: session_labels.get(value, ""),
+            )
             if selected_id and st.button("Open saved case", icon=":material/folder_open:"):
                 row = get_session(selected_id)
                 st.session_state.session_id = selected_id
@@ -140,6 +174,12 @@ if st.session_state.session_id is None:
     st.stop()
 
 session_id = st.session_state.session_id
+if st.session_state.get("demo_limit_reached_for") == session_id:
+    st.warning(
+        "Demo limit reached. This session or today's shared demo allowance has used its model calls. "
+        "If only this session reached its limit, start a new fictional session; if the daily limit was reached, try again tomorrow."
+    )
+    st.stop()
 history = st.session_state.get("history", [])
 st.session_state.setdefault("verification_state", {})
 patient_type = select_pathway(history) if history else "unknown"
@@ -211,7 +251,7 @@ else:
             st.write(item["content"])
     with st.chat_message("assistant", avatar=":material/health_and_safety:"):
         st.write(st.session_state.next_question)
-    answer = st.chat_input("Answer for this fictional case", max_chars=4000)
+    answer = st.chat_input("Answer for this fictional case", max_chars=MAX_ANSWER_LENGTH)
     if answer:
         client = model_client()
         try:
@@ -225,6 +265,11 @@ else:
                 st.session_state.result = result
             else:
                 st.session_state.next_question = next_question
+        except DemoLimitReached:
+            saved_session = get_session(session_id)
+            if saved_session:
+                st.session_state.history = json.loads(saved_session[1])
+            st.session_state.demo_limit_reached_for = session_id
         except Exception:
             # Never display exception text because provider errors can contain request details.
             st.error("QuickHealth could not complete that step. Check your local setup and try again.")
