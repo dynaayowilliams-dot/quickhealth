@@ -1,5 +1,8 @@
 """Public, no-model landing page for QuickHealth."""
 
+import base64
+import re
+
 import streamlit as st
 
 
@@ -35,6 +38,7 @@ HOME_STYLES = """<style>
       .qh-card--child { background:#FDEFC7; }
       .qh-icon { width:50px; height:50px; display:grid; place-items:center; margin-bottom:1rem; border-radius:50%; background:#FFFBF7; }
       .qh-icon svg { width:28px; height:28px; }
+      .qh-icon img { width:28px; height:28px; }
       .qh-card p { margin-bottom:0; }
       .qh-steps { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1.4rem; text-align:center; }
       .qh-step { padding:1rem .7rem; }
@@ -44,20 +48,37 @@ HOME_STYLES = """<style>
       .qh-alert { padding:1rem 1.2rem; border-left:5px solid #A83222; border-radius:12px; background:#FFFBF7; font-weight:750; }
       .qh-footer { padding:1.5rem 0; border-top:1px solid #D8DED8; font-size:.92rem; }
       .qh-footer-note { margin-top:.7rem; }
+      .qh-nav .qh-demo-link { display:inline-flex; align-items:center; justify-content:center; min-height:56px; padding:.7rem 1.6rem; border:2px solid #0F4C3A; border-radius:999px; background:#0F4C3A; color:#fff; font-size:1.2rem; font-weight:800; text-decoration:none; }
+      .qh-nav .qh-demo-link:focus-visible { outline:3px solid #A83222; outline-offset:4px; }
+      .st-key-home_demo_hero button, .st-key-home_demo_pathways button { min-height:56px; padding:.7rem 1.6rem; border:2px solid #0F4C3A; border-radius:999px; background:#0F4C3A; color:#fff; font-size:1.2rem; font-weight:800; }
+      .st-key-home_demo_hero button:focus-visible, .st-key-home_demo_pathways button:focus-visible { outline:3px solid #A83222; outline-offset:4px; }
+      .st-key-home_demo_hero button { min-height:64px; padding-inline:2rem; font-size:1.35rem; }
+      @media(max-width:560px) { .qh-nav .qh-demo-link, .st-key-home_demo_hero, .st-key-home_demo_hero button, .st-key-home_demo_pathways, .st-key-home_demo_pathways button { width:100%; } }
       @media(max-width:760px) { .qh-hero { grid-template-columns:1fr; padding:2.7rem 0 3.2rem; } .qh-art { min-height:290px; } .qh-steps { grid-template-columns:1fr; gap:.5rem; } }
       @media(max-width:560px) { .qh-nav { gap:.6rem; font-size:.84rem; } .qh-grid, .qh-safety ul { grid-template-columns:1fr; } .qh-pathways { margin:0 -.6rem; padding-inline:.6rem; } .qh-art { min-height:260px; } }
       @media(prefers-reduced-motion:reduce) { .qh-home *, .qh-home *::before, .qh-home *::after { scroll-behavior:auto !important; transition:none !important; animation:none !important; } }
     </style>"""
 
+def _icons_as_images(markup):
+    def replace_icon(match):
+        svg = match.group(1)
+        label = re.search(r'aria-label="([^"]*)"', svg)
+        alt = label.group(1) if label else ""
+        encoded = base64.b64encode(svg.encode("utf-8")).decode("ascii")
+        return f'<img src="data:image/svg+xml;base64,{encoded}" alt="{alt}">'
+
+    return re.sub(r'(?<=<span class="qh-icon">)(<svg\b.*?</svg>)(?=</span>)', replace_icon, markup)
+
+
 st.html(
-    HOME_STYLES + """
+    _icons_as_images(HOME_STYLES + """
     <div class="qh-home">
       <header class="qh-top">
         <div class="qh-brand" aria-label="QuickHealth heart and leaf logo">
           <svg viewBox="0 0 48 48" role="img" aria-label="Heart and leaf logo" xmlns="http://www.w3.org/2000/svg"><path d="M24 40S5 29 5 16.8C5 7.2 17.2 4.5 24 14c6.8-9.5 19-6.8 19 2.8C43 29 24 40 24 40Z" fill="none" stroke="#0F4C3A" stroke-width="3.5"/><path d="M20 27c.2-7.2 5.6-12 13-12-1 7.8-5.7 12.1-13 12Z" fill="#0F4C3A"/><path d="M15 32c2.2-3.4 5.4-6.1 9.5-8.4" fill="none" stroke="#0F4C3A" stroke-width="2.4"/></svg>
           QuickHealth
         </div>
-        <nav class="qh-nav" aria-label="Home sections"><a href="#home">Home</a><a href="#mothers">For Mothers</a><a href="#children">For Children</a><a href="#about">About</a></nav>
+        <nav class="qh-nav" aria-label="Home sections"><a href="#home">Home</a><a href="#mothers">For Mothers</a><a href="#children">For Children</a><a href="#about">About</a><a class="qh-demo-link" href="/demo" target="_top">Try the demo</a></nav>
       </header>
       <main>
         <section class="qh-hero" id="home">
@@ -66,7 +87,7 @@ st.html(
         </section>
       </main>
     </div>
-    """
+    """)
 )
 
 st.button(
@@ -85,7 +106,7 @@ st.button(
 )
 
 st.html(
-    HOME_STYLES + """
+    _icons_as_images(HOME_STYLES + """
     <div class="qh-home">
       <section class="qh-pathways" aria-labelledby="pathway-heading"><div class="qh-center"><h2 id="pathway-heading">Support for every stage</h2><p>Focused pathways help gather the details that matter for a clear clinical history.</p></div>
         <div class="qh-grid">
@@ -99,8 +120,8 @@ st.html(
         <article class="qh-step"><span class="qh-icon"><svg viewBox="0 0 32 32" role="img" aria-label="Structured note icon"><path d="M9 4.5h10l5 5V27H9V4.5Z" fill="none" stroke="#0F4C3A" stroke-width="2.2"/><path d="M19 4.5v5h5M12.5 15h8M12.5 19.5h8M12.5 24h5" stroke="#0F4C3A" stroke-width="2.2"/></svg></span><h3>Get a clear note</h3><p>A structured clerking note and a plain-language summary for the clinician to review.</p></article>
       </div></section>
       <section class="qh-safety" id="about" aria-labelledby="safety-heading"><h2 id="safety-heading">Built to be careful</h2><ul><li>QuickHealth never diagnoses.</li><li>Urgency is decided by a rules file.</li><li>Completeness and contradiction checks run before a note is finished.</li><li>This prototype uses fictional cases only.</li><li>The rules have not yet been reviewed by a clinician.</li><li>QuickHealth is not medical advice.</li></ul><p class="qh-alert">If someone has danger signs, call emergency services.</p></section>
-      <footer class="qh-footer"><p><a href="https://github.com/dynaayowilliams-dot/quickhealth">View the project on GitHub</a></p><p class="qh-footer-note">QuickHealth is not medical advice. If someone has danger signs, call emergency services.</p></footer>
+      <footer class="qh-footer"><p><a href="https://github.com/dynaayowilliams-dot/quickhealth">View the project on GitHub</a></p><p class="qh-footer-note">QuickHealth is not medical advice. If someone has danger signs, call emergency services.</p><p style="margin-top:1.2rem">Built for neatHack 2026 with neatlogs, Entire and cfo.ai<br><span style="font-size:.86em;color:#52635E">Code written with Codex</span></p></footer>
     </div>
-    """
+    """)
 )
 

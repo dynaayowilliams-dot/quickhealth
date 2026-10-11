@@ -25,6 +25,14 @@ from quickhealth.verification import completeness_check
 from quickhealth.workflow import DemoLimitReached, process_answer
 
 
+def render_credit():
+    st.markdown(
+        '<div style="line-height:1.35">Built for neatHack 2026 with neatlogs, Entire and cfo.ai<br>'
+        '<span style="font-size:.85em;color:#52635E">Code written with Codex</span></div>',
+        unsafe_allow_html=True,
+    )
+
+
 apply_app_style(st)
 with st.container(border=True):
     st.error(
@@ -53,13 +61,8 @@ if access_code_required and not st.session_state.get("quickhealth_access_granted
             st.rerun()
         else:
             st.error("That access code did not match.")
+    render_credit()
     st.stop()
-
-st.markdown(
-    '<div style="line-height:1.35">Built for neatHack 2026 with neatlogs, Entire and cfo.ai<br>'
-    '<span style="font-size:.85em;color:#52635E">Code written with Codex</span></div>',
-    unsafe_allow_html=True,
-)
 
 st.title("QuickHealth", icon=":material/health_and_safety:")
 st.caption("A calm, structured clerking workspace for fictional cases")
@@ -69,9 +72,11 @@ def model_client():
     """Create the OpenAI client only when the owner has configured a key."""
     if not CONFIG.get("OPENAI_API_KEY"):
         st.error("OPENAI_API_KEY is missing. Add it to your local .env file, then restart Streamlit.")
+        render_credit()
         st.stop()
     if not CONFIG.get("OPENAI_MODEL"):
         st.error("OPENAI_MODEL is missing. Add it to your local .env file, then restart Streamlit.")
+        render_credit()
         st.stop()
     return OpenAI(api_key=CONFIG["OPENAI_API_KEY"])
 
@@ -134,6 +139,7 @@ if "session_id" not in st.session_state:
     st.session_state.session_id = None
 if st.session_state.session_id is None:
     st.write("Start a fictional case to begin. QuickHealth asks one question at a time and adapts follow-up questions to earlier answers.")
+    render_credit()
     st.stop()
 
 session_id = st.session_state.session_id
@@ -142,6 +148,7 @@ if st.session_state.get("demo_limit_reached_for") == session_id:
         "Demo limit reached. This session or today's shared demo allowance has used its model calls. "
         "If only this session reached its limit, start a new fictional session; if the daily limit was reached, try again tomorrow."
     )
+    render_credit()
     st.stop()
 history = st.session_state.get("history", [])
 st.session_state.setdefault("verification_state", {})
@@ -174,6 +181,7 @@ if st.session_state.get("result"):
         render_urgency(st, result["urgency"])
         st.error("EMERGENCY — stop the questionnaire and seek emergency care now. Call emergency services or go to the nearest hospital.")
         st.write(result["message"])
+        render_credit()
         st.stop()
     if result.get("incomplete") or result.get("blocked"):
         st.warning(result.get("message", "Required details remain unresolved; the session is not complete."))
@@ -187,6 +195,7 @@ if st.session_state.get("result"):
             for pair in result["contradictions"]:
                 st.write(" • ".join(pair))
         st.write("No final note was generated because verification is unresolved.")
+        render_credit()
         st.stop()
     st.subheader("Structured clerking note", icon=":material/clinical_notes:")
     with st.container(border=True):
@@ -239,3 +248,5 @@ else:
         finally:
             neatlogs.flush()
         st.rerun()
+
+render_credit()
