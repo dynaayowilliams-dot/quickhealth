@@ -99,7 +99,7 @@ st.html(
         <article class="qh-step"><span class="qh-icon"><svg viewBox="0 0 32 32" role="img" aria-label="Structured note icon"><path d="M9 4.5h10l5 5V27H9V4.5Z" fill="none" stroke="#0F4C3A" stroke-width="2.2"/><path d="M19 4.5v5h5M12.5 15h8M12.5 19.5h8M12.5 24h5" stroke="#0F4C3A" stroke-width="2.2"/></svg></span><h3>Get a clear note</h3><p>A structured clerking note and a plain-language summary for the clinician to review.</p></article>
       </div></section>
       <section class="qh-safety" id="about" aria-labelledby="safety-heading"><h2 id="safety-heading">Built to be careful</h2><ul><li>QuickHealth never diagnoses.</li><li>Urgency is decided by a rules file.</li><li>Completeness and contradiction checks run before a note is finished.</li><li>This prototype uses fictional cases only.</li><li>The rules have not yet been reviewed by a clinician.</li><li>QuickHealth is not medical advice.</li></ul><p class="qh-alert">If someone has danger signs, call emergency services.</p></section>
-      <footer class="qh-footer"><p>Built for neatHack 2026 with Codex, Entire, neatlogs and cfo.ai</p><p><a href="https://github.com/dynaayowilliams-dot/quickhealth">View the project on GitHub</a></p><p class="qh-footer-note">QuickHealth is not medical advice. If someone has danger signs, call emergency services.</p></footer>
+      <footer class="qh-footer"><p><a href="https://github.com/dynaayowilliams-dot/quickhealth">View the project on GitHub</a></p><p class="qh-footer-note">QuickHealth is not medical advice. If someone has danger signs, call emergency services.</p></footer>
     </div>
     """
 )

@@ -55,6 +55,12 @@ if access_code_required and not st.session_state.get("quickhealth_access_granted
             st.error("That access code did not match.")
     st.stop()
 
+st.markdown(
+    '<div style="line-height:1.35">Built for neatHack 2026 with neatlogs, Entire and cfo.ai<br>'
+    '<span style="font-size:.85em;color:#52635E">Code written with Codex</span></div>',
+    unsafe_allow_html=True,
+)
+
 st.title("QuickHealth", icon=":material/health_and_safety:")
 st.caption("A calm, structured clerking workspace for fictional cases")
 
