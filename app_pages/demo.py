@@ -45,10 +45,6 @@ with st.container(border=True):
         icon=":material/lock:",
     )
 
-with st.sidebar:
-    st.subheader("Fictional sessions", icon=":material/folder_open:")
-    fictional_confirmed = st.checkbox("I confirm this case is entirely fictional")
-
 access_code_required = CONFIG.get("QUICKHEALTH_ACCESS_CODE")
 if access_code_required and not st.session_state.get("quickhealth_access_granted", False):
     st.subheader("Access code required")
@@ -66,6 +62,10 @@ if access_code_required and not st.session_state.get("quickhealth_access_granted
 
 st.title("QuickHealth", icon=":material/health_and_safety:")
 st.caption("A calm, structured clerking workspace for fictional cases")
+with st.container(border=True):
+    st.subheader("Before you begin", icon=":material/verified_user:")
+    st.caption("Use fictional cases only. Do not enter real patient information.")
+    fictional_confirmed = st.checkbox("I confirm this case is entirely fictional", key="fictional_case_confirmed")
 
 
 def model_client():
@@ -83,6 +83,7 @@ def model_client():
 
 sessions = list_sessions()
 with st.sidebar:
+    st.subheader("Fictional sessions", icon=":material/folder_open:")
     with st.container(border=True):
         if st.button("Start a new fictional case", type="primary", disabled=not fictional_confirmed, icon=":material/add:"):
             st.session_state.session_id = create_session()

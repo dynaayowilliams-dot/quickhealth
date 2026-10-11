@@ -93,7 +93,9 @@ def apply_app_style(st):
         [data-testid="stHeader"], [data-testid="stToolbar"], [data-testid="stDecoration"] {background:var(--qh-bg)!important; color:var(--qh-text)!important;}
         [data-testid="stSidebar"], [data-testid="stSidebar"]>div {background:var(--qh-surface)!important; color:var(--qh-text)!important;}
         [data-testid="stMarkdownContainer"], [data-testid="stCaptionContainer"], [data-testid="stWidgetLabel"], label, small {color:var(--qh-text)!important;}
-        .block-container {max-width:1120px; padding:2rem 1.5rem 3rem;}
+        .block-container {max-width:1120px; padding: max(2rem, env(safe-area-inset-top)) max(1.5rem, env(safe-area-inset-left)) max(3rem, env(safe-area-inset-bottom)) max(1.5rem, env(safe-area-inset-right));}
+        [data-testid="stCheckbox"] label {min-height:44px; display:flex; align-items:center; gap:.65rem; padding:.35rem .25rem; cursor:pointer;}
+        [data-testid="stCheckbox"] input {width:20px; height:20px;}
         [data-testid="stVerticalBlockBorderWrapper"] {border:1px solid #CFD9D0; border-radius:22px; background:var(--qh-bg);}
         [data-testid="stChatMessage"] {color:var(--qh-text)!important; border:1px solid #CFD9D0; border-radius:22px; padding:1rem 1.15rem; background:var(--qh-surface)!important;}
         [data-testid="stChatInput"], [data-testid="stChatInput"]>div, [data-testid="stChatInput"] textarea, [data-testid="stTextInput"] input, [data-testid="stSelectbox"] [role="combobox"] {color:var(--qh-text)!important; background:var(--qh-bg)!important; border-color:var(--qh-border)!important; border-radius:14px;}
@@ -112,7 +114,7 @@ def apply_app_style(st):
         .qh-urgency--routine {color:#124E48; background:#E2F2F0; border-color:#24756C;}
         .qh-urgency--unknown {color:var(--qh-text); background:var(--qh-surface); border-color:var(--qh-border);}
         @media (max-width: 640px) {
-            .block-container {padding:1.2rem 1rem 2rem;}
+            .block-container {padding: max(1.2rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-left)) max(2rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-right));}
             [data-testid="stChatMessage"] {padding:.8rem .9rem;}
             .qh-pathway-card {padding:1rem;}
         }
