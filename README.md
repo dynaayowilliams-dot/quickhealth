@@ -6,6 +6,12 @@ QuickHealth is a hackathon prototype of an AI-assisted clerking and triage inter
 
 The prototype is intended for demonstration to nurses, health workers, and hackathon reviewers interested in history-taking workflows in Nigeria. It has general, paediatric, antenatal, and postpartum pathways. Use made-up training cases only. Do not enter real patient information.
 
+## Try it
+
+- **Public app:** [Open QuickHealth](https://quickhealth-foryou.streamlit.app/)
+- If the app asks for an access code, enter the demo code provided by the project owner. The code is configured privately as `QUICKHEALTH_ACCESS_CODE` and is not published in this repository.
+- Use fictional cases only. The red-flag rules have not been reviewed by a clinician, and QuickHealth is not medical advice.
+
 ## Run it on Windows
 
 Open PowerShell and run these commands from the project folder:
