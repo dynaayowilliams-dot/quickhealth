@@ -69,28 +69,75 @@ def pending_conflict_count(verification_state):
 def apply_app_style(st):
     """Add restrained responsive polish on top of Streamlit's theme tokens."""
     st.html("""<style>
+        :root {
+            color-scheme: light;
+            --qh-bg: #FFFBF7;
+            --qh-surface: #E4EDE2;
+            --qh-primary: #0F4C3A;
+            --qh-text: #1F2D2A;
+            --qh-border: #71827B;
+        }
+        html, body, [data-testid="stApp"], [data-testid="stAppViewContainer"] {
+            color: var(--qh-text) !important;
+            background: var(--qh-bg) !important;
+        }
+        [data-testid="stHeader"], [data-testid="stToolbar"],
+        [data-testid="stDecoration"], [data-testid="stStatusWidget"] {
+            color: var(--qh-text) !important;
+            background: var(--qh-bg) !important;
+        }
+        [data-testid="stSidebar"], [data-testid="stSidebar"] > div {
+            color: var(--qh-text) !important;
+            background: var(--qh-surface) !important;
+            border-right: 1px solid var(--qh-border);
+        }
+        [data-testid="stMarkdownContainer"], [data-testid="stCaptionContainer"],
+        [data-testid="stWidgetLabel"], [data-testid="stMarkdownContainer"] p,
+        [data-testid="stMarkdownContainer"] li, label, small {
+            color: var(--qh-text) !important;
+        }
         .block-container {max-width: 1120px; padding-top: 1.6rem; padding-bottom: 3rem;}
-        [data-testid="stAppViewContainer"] {background: #F7F6F2;}
-        [data-testid="stSidebar"] {border-right: 1px solid #D9E3DE;}
         [data-testid="stVerticalBlockBorderWrapper"] {border-radius: 18px;}
         [data-testid="stChatMessage"] {
-            border: 1px solid #D9E3DE; border-radius: 18px;
-            padding: 0.85rem 1rem; background: rgba(255,255,255,0.72);
+            color: var(--qh-text) !important;
+            border: 1px solid var(--qh-border); border-radius: 18px;
+            padding: 0.85rem 1rem; background: var(--qh-surface) !important;
+        }
+        [data-testid="stChatInput"], [data-testid="stChatInput"] > div,
+        [data-testid="stChatInput"] textarea,
+        [data-testid="stTextInput"] input, [data-testid="stSelectbox"] [role="combobox"] {
+            color: var(--qh-text) !important;
+            background: var(--qh-bg) !important;
+            border-color: var(--qh-border) !important;
         }
         [data-testid="stChatInput"] {border-radius: 16px;}
         [data-testid="stChatInput"] textarea {line-height: 1.55;}
-        button[kind="primary"] {border-radius: 12px; font-weight: 650;}
-        .qh-pathway-card {
-            border: 1px solid #D9E3DE; border-left: 5px solid #6C9690;
-            border-radius: 18px; padding: 1rem 1.2rem; margin: 0.35rem 0 1rem;
-            color: #153B3A; background: #FFFFFF;
+        [data-testid="stChatInput"] textarea::placeholder,
+        input::placeholder, textarea::placeholder {color: #485852 !important; opacity: 1;}
+        button[kind="primary"] {
+            color: #FFFFFF !important; background: var(--qh-primary) !important;
+            border-color: var(--qh-primary) !important; border-radius: 12px; font-weight: 650;
         }
-        .qh-pathway-card p {margin: 0; line-height: 1.55; color: #315654;}
-        .qh-pathway-card--pregnancy {background: #FBF1F3; border-color: #E5CBD2; border-left-color: #A76F82;}
-        .qh-pathway-card--postpartum {background: #FBF2E9; border-color: #E8D6C2; border-left-color: #A56C48;}
-        .qh-pathway-card--child {background: linear-gradient(110deg, #EFF7F0, #EFF7F0 72%, #EEF5FA); border-color: #D2E3D8; border-left-color: #56836A;}
-        .qh-pathway-card--general {background: #F0F5F7; border-color: #D4E1E5; border-left-color: #477A88;}
-        .qh-pathway-card--unknown {background: #FBF8EF; border-color: #E9E1C8; border-left-color: #9A8751;}
+        [data-testid="stAlert"] {
+            color: var(--qh-text) !important;
+            background: var(--qh-surface) !important;
+            border: 1px solid var(--qh-border) !important;
+        }
+        [data-testid="stAlert"] * {color: var(--qh-text) !important;}
+        [data-testid="stProgress"] [role="progressbar"] {background: #71827B !important;}
+        [data-testid="stProgress"] [role="progressbar"] > div {
+            background: var(--qh-primary) !important;
+        }
+        [data-testid="stProgress"] p {color: var(--qh-text) !important;}
+        .qh-pathway-card {
+            border: 1px solid var(--qh-border); border-left: 5px solid var(--qh-primary);
+            border-radius: 18px; padding: 1rem 1.2rem; margin: 0.35rem 0 1rem;
+            color: var(--qh-text); background: var(--qh-surface);
+        }
+        .qh-pathway-card p {margin: 0; line-height: 1.55; color: var(--qh-text);}
+        .qh-pathway-card--pregnancy, .qh-pathway-card--postpartum,
+        .qh-pathway-card--child, .qh-pathway-card--general,
+        .qh-pathway-card--unknown {background: var(--qh-surface); border-color: var(--qh-border);}
         @media (max-width: 640px) {
             .block-container {padding: 1rem 0.85rem 2rem;}
             [data-testid="stChatMessage"] {padding: 0.7rem 0.8rem;}

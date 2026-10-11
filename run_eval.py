@@ -3,8 +3,10 @@
 import argparse
 from datetime import date, datetime, timedelta, timezone
 import json
+import os
 import re
 import sqlite3
+import tempfile
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -17,6 +19,9 @@ from quickhealth.privacy import redact_trace_content
 
 ROOT = Path(__file__).resolve().parent
 CASES_PATH = ROOT / "tests" / "cases.json"
+# Evaluations must never write to the app's saved-session database.
+_EVAL_DATABASE = tempfile.TemporaryDirectory(prefix="quickhealth-eval-")
+os.environ["QUICKHEALTH_DB_PATH"] = str(Path(_EVAL_DATABASE.name) / "evaluation.sqlite3")
 
 CONFIG = dotenv_values(ROOT / ".env")
 neatlogs.init(
@@ -30,10 +35,12 @@ from opentelemetry import trace as otel_trace
 
 from quickhealth.pathways import select_pathway
 from quickhealth.safety_rules import assess_urgency
-from quickhealth.storage import create_session
 from quickhealth import storage
+from quickhealth.storage import create_session
 from quickhealth.storage import get_session, save_answer
 from quickhealth.workflow import process_answer
+
+storage.DB_PATH = Path(_EVAL_DATABASE.name) / "evaluation.sqlite3"
 
 
 class ScriptedModel:

@@ -1,6 +1,7 @@
 """SQLite persistence for fictional clerking sessions."""
 
 import json
+import os
 import sqlite3
 import time
 import uuid
@@ -10,7 +11,7 @@ from contextlib import contextmanager
 import neatlogs
 from opentelemetry import trace as otel_trace
 
-DB_PATH = Path(__file__).resolve().parents[1] / "data" / "quickhealth.sqlite3"
+DB_PATH = Path(os.environ.get("QUICKHEALTH_DB_PATH", Path(__file__).resolve().parents[1] / "data" / "quickhealth.sqlite3"))
 
 
 @contextmanager
@@ -114,6 +115,14 @@ def get_session(session_id):
 def list_sessions():
     with _connect() as connection:
         return connection.execute("SELECT id FROM sessions ORDER BY created_at DESC").fetchall()
+
+
+@neatlogs.span(kind="TOOL", name="sqlite_state_store_clear_fictional_sessions", capture_input=False, capture_output=False)
+def clear_fictional_sessions():
+    """Delete saved fictional sessions from the configured QuickHealth database."""
+    with _connect() as connection:
+        cursor = connection.execute("DELETE FROM sessions")
+        return cursor.rowcount
 
 
 @neatlogs.span(kind="TOOL", name="sqlite_state_store_save_answer", capture_input=False, capture_output=False)

@@ -48,6 +48,15 @@ class StorageRecoveryTests(unittest.TestCase):
                     {"sessions": 1, "input_tokens": 120, "output_tokens": 30, "latency_ms": 500.0},
                 )
 
+    def test_clear_fictional_sessions_deletes_saved_rows(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            test_db = Path(temp_dir) / "test.sqlite3"
+            with patch.object(storage, "DB_PATH", test_db):
+                storage.create_session()
+                storage.create_session()
+                self.assertEqual(storage.clear_fictional_sessions(), 2)
+                self.assertEqual(storage.list_sessions(), [])
+
 
 if __name__ == "__main__":
     unittest.main()

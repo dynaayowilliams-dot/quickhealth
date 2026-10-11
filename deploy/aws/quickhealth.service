@@ -1,0 +1,22 @@
+[Unit]
+Description=QuickHealth Streamlit demo
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=quickhealth
+Group=quickhealth
+WorkingDirectory=/opt/quickhealth
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/opt/quickhealth/.venv/bin/streamlit run app.py --server.address=0.0.0.0 --server.port=8501 --server.headless=true
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+UMask=0077
+NoNewPrivileges=true
+ProtectSystem=full
+ReadWritePaths=/opt/quickhealth/data
+
+[Install]
+WantedBy=multi-user.target

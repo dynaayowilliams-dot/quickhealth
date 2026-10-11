@@ -1,7 +1,9 @@
 """QuickHealth: fictional-case clerking assistant demo."""
 
 import json
+import os
 from pathlib import Path
+import secrets
 
 import streamlit as st
 from dotenv import dotenv_values
@@ -9,8 +11,6 @@ from dotenv import dotenv_values
 # Initialize tracing before importing OpenAI so neatlogs can instrument it.
 CONFIG = dotenv_values(Path(__file__).parent / ".env")
 # The clerking helpers use the model name from this .env-derived value.
-import os
-
 os.environ["OPENAI_MODEL"] = CONFIG.get("OPENAI_MODEL") or ""
 import neatlogs
 from quickhealth.privacy import redact_trace_content
@@ -35,6 +35,7 @@ from quickhealth.obstetric_dates import LMP_ESTIMATE_NOTICE, find_lmp_estimate
 from quickhealth.pathways import select_pathway
 from quickhealth.storage import (
     create_session,
+    clear_fictional_sessions,
     get_session,
     get_verification_state,
     list_sessions,
@@ -55,6 +56,20 @@ with st.container(border=True):
         icon=":material/emergency:",
     )
     st.info("Do not enter real patient names, contact details, or any real patient information.", icon=":material/lock:")
+
+access_code_required = os.environ.get("QUICKHEALTH_ACCESS_CODE") or CONFIG.get("QUICKHEALTH_ACCESS_CODE")
+if access_code_required and not st.session_state.get("quickhealth_access_granted", False):
+    st.subheader("Access code required")
+    with st.form("quickhealth_access_gate"):
+        supplied_access_code = st.text_input("Access code", type="password")
+        access_code_submitted = st.form_submit_button("Continue")
+    if access_code_submitted:
+        if secrets.compare_digest(supplied_access_code, access_code_required):
+            st.session_state["quickhealth_access_granted"] = True
+            st.rerun()
+        else:
+            st.error("That access code did not match.")
+    st.stop()
 
 
 def model_client():
@@ -95,6 +110,28 @@ with st.sidebar:
                     if row[2]
                     else None
                 )
+    st.divider()
+    if st.button("Clear saved fictional sessions", key="clear_saved_fictional_sessions"):
+        st.session_state.confirm_clear_fictional_sessions = True
+    if st.session_state.get("confirm_clear_fictional_sessions"):
+        st.warning("This will permanently delete all saved fictional sessions from this app database.")
+        confirm_col, cancel_col = st.columns(2)
+        with confirm_col:
+            if st.button("Confirm clear", type="primary", key="confirm_clear_sessions"):
+                deleted_count = clear_fictional_sessions()
+                st.session_state.session_id = None
+                st.session_state.history = []
+                st.session_state.result = None
+                st.session_state.verification_state = {}
+                st.session_state.confirm_clear_fictional_sessions = False
+                st.session_state.clear_sessions_message = f"Deleted {deleted_count} saved fictional sessions."
+                st.rerun()
+        with cancel_col:
+            if st.button("Cancel", key="cancel_clear_sessions"):
+                st.session_state.confirm_clear_fictional_sessions = False
+                st.rerun()
+    if st.session_state.get("clear_sessions_message"):
+        st.success(st.session_state.pop("clear_sessions_message"))
 
 if "session_id" not in st.session_state:
     st.session_state.session_id = None
