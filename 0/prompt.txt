@@ -1,0 +1,17 @@
+i checked the url and my landing page didnt load
+
+---
+
+Make the landing page the first page of the Streamlit app at the same URL, with the existing app as a second page, using Streamlit's multipage navigation (st.navigation and st.Page). Keep app.py as the entry file, since Streamlit Cloud is set to run app.py.
+
+---
+
+Requirements:
+1. Page 1 "Home" recreates the design of landing/index.html inside Streamlit (use st.html or st.markdown with inline CSS, same colours, hero, pathway cards, how-it-works steps, safety section and footer). It must make no model calls, need no access code, and cost nothing to view.
+2. The "Try the demo" buttons on Home navigate to page 2 using st.switch_page or st.page_link. The "See how it works" button scrolls or jumps to that section if possible, otherwise just shows it.
+3. Page 2 "Demo" is the existing clerking app with all its current logic, safety rules, access-code gate, spending limits, "fictional cases only" checkbox and "not medical advice" notice unchanged.
+4. Keep neatlogs.init() running once at startup, BEFORE importing openai, exactly as now, and do not initialise it twice.
+5. Keep the current module structure so run_eval.py, live_eval.py and all tests still work.
+6. Keep landing/index.html and the GitHub Pages workflow as they are.
+7. The "not medical advice, call emergency services for danger signs" notice must be visible on both pages, and the page must be readable on a phone.
+Do not change safety_rules.py, the rules file, the tests or any logic. Run the tests and report the results. Do not read, print or open .env. Do not commit or push.
