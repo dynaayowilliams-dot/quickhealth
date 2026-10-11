@@ -1,6 +1,5 @@
 """Public, no-model landing page for QuickHealth."""
 
-import base64
 import re
 
 import streamlit as st
@@ -38,7 +37,17 @@ HOME_STYLES = """<style>
       .qh-card--child { background:#FDEFC7; }
       .qh-icon { width:50px; height:50px; display:grid; place-items:center; margin-bottom:1rem; border-radius:50%; background:#FFFBF7; }
       .qh-icon svg { width:28px; height:28px; }
-      .qh-icon img { width:28px; height:28px; }
+      .qh-symbol { position:relative; display:block; width:30px; height:30px; color:#0F4C3A; }
+      .qh-symbol--pregnancy { font:30px/30px Arial,sans-serif; text-align:center; }
+      .qh-symbol--pregnancy::before { content:"♥"; }
+      .qh-symbol--child::before { position:absolute; top:2px; left:11px; width:8px; height:8px; border:2px solid #0F4C3A; border-radius:50%; content:""; }
+      .qh-symbol--child::after { position:absolute; bottom:2px; left:4px; width:22px; height:13px; border:2px solid #0F4C3A; border-bottom:0; border-radius:14px 14px 0 0; content:""; }
+      .qh-symbol--chat { width:22px; height:17px; border:2px solid #0F4C3A; border-radius:3px; }
+      .qh-symbol--chat::before { position:absolute; bottom:-6px; left:2px; width:7px; height:7px; border-left:2px solid #0F4C3A; transform:skew(-30deg); content:""; }
+      .qh-symbol--chat::after { position:absolute; top:4px; left:4px; width:10px; height:2px; background:#0F4C3A; box-shadow:0 5px #0F4C3A; content:""; }
+      .qh-symbol--shield { width:24px; height:28px; background:#0F4C3A; clip-path:polygon(50% 0,100% 16%,94% 63%,50% 100%,6% 63%,0 16%); }
+      .qh-symbol--shield::after { position:absolute; top:6px; left:7px; width:8px; height:5px; border-bottom:2px solid white; border-left:2px solid white; transform:rotate(-45deg); content:""; }
+      .qh-symbol--document { width:20px; height:26px; border:2px solid #0F4C3A; border-radius:2px; background:linear-gradient(#0F4C3A,#0F4C3A) 4px 8px/10px 2px no-repeat,linear-gradient(#0F4C3A,#0F4C3A) 4px 13px/10px 2px no-repeat,linear-gradient(#0F4C3A,#0F4C3A) 4px 18px/7px 2px no-repeat; }
       .qh-card p { margin-bottom:0; }
       .qh-steps { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1.4rem; text-align:center; }
       .qh-step { padding:1rem .7rem; }
@@ -59,19 +68,28 @@ HOME_STYLES = """<style>
       @media(prefers-reduced-motion:reduce) { .qh-home *, .qh-home *::before, .qh-home *::after { scroll-behavior:auto !important; transition:none !important; animation:none !important; } }
     </style>"""
 
-def _icons_as_images(markup):
+def _icons_as_css_shapes(markup):
     def replace_icon(match):
         svg = match.group(1)
         label = re.search(r'aria-label="([^"]*)"', svg)
-        alt = label.group(1) if label else ""
-        encoded = base64.b64encode(svg.encode("utf-8")).decode("ascii")
-        return f'<img src="data:image/svg+xml;base64,{encoded}" alt="{alt}">'
+        description = label.group(1) if label else ""
+        if "Pregnancy" in description:
+            icon, alt = "pregnancy", "Pregnancy pathway icon"
+        elif "Child" in description:
+            icon, alt = "child", "Child health pathway icon"
+        elif "History" in description:
+            icon, alt = "chat", "History questions icon"
+        elif "Rules" in description:
+            icon, alt = "shield", "Rules check icon"
+        else:
+            icon, alt = "document", "Structured note icon"
+        return f'<span class="qh-symbol qh-symbol--{icon}" role="img" aria-label="{alt}"></span>'
 
     return re.sub(r'(?<=<span class="qh-icon">)(<svg\b.*?</svg>)(?=</span>)', replace_icon, markup)
 
 
 st.html(
-    _icons_as_images(HOME_STYLES + """
+    _icons_as_css_shapes(HOME_STYLES + """
     <div class="qh-home">
       <header class="qh-top">
         <div class="qh-brand" aria-label="QuickHealth heart and leaf logo">
@@ -106,7 +124,7 @@ st.button(
 )
 
 st.html(
-    _icons_as_images(HOME_STYLES + """
+    _icons_as_css_shapes(HOME_STYLES + """
     <div class="qh-home">
       <section class="qh-pathways" aria-labelledby="pathway-heading"><div class="qh-center"><h2 id="pathway-heading">Support for every stage</h2><p>Focused pathways help gather the details that matter for a clear clinical history.</p></div>
         <div class="qh-grid">
