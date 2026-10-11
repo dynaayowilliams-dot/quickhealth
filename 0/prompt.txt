@@ -1,0 +1,21 @@
+Add the public app link and the access-code instructions to README.md under a "Try it" heading, stating that it is for fictional cases only and that the red-flag rules are not clinician-reviewed. Do not commit or push.
+
+---
+
+https://quickhealth-foryou.streamlit.app/
+
+---
+
+so how about my landing page, can we now have them working together
+
+---
+
+how to host it
+
+---
+
+can you do that for me
+
+---
+
+List every file you created or changed since the last commit, say why you changed each one, and flag anything that touches secrets, deployment, GitHub Actions or the access code. Quote the exact link you added to README.md and to landing/index.html. Do not change anything. Do not commit or push.
